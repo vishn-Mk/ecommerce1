@@ -5,6 +5,7 @@ import 'package:ecommerce/screens/login.dart';
 import 'package:ecommerce/screens/profiile.dart';
 import 'package:ecommerce/screens/splash.dart';
 import 'package:ecommerce/view_model/auth_viewmodel.dart';
+import 'package:ecommerce/view_model/cart_viewmodel.dart';
 import 'package:ecommerce/view_model/product_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,13 +44,16 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (_) => HomeViewModel(),
           ),
+          ChangeNotifierProvider(
+            create: (_) => CartViewModel(),
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
               // Customize your theme here
               ),
-          home: BottomNavBar(),
+          home: Login(),
         ),
       );
 }

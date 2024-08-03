@@ -151,12 +151,12 @@ class TrendingPage extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            onPressed: () {
-              // Handle add to cart
-            },
-            icon: Icon(Icons.add_shopping_cart_sharp, color: Colors.green),
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     // Handle add to cart
+          //   },
+          //   icon: Icon(Icons.add_shopping_cart_sharp, color: Colors.green),
+          // ),
         ],
       ),
     );

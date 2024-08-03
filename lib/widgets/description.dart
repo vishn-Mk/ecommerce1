@@ -34,22 +34,22 @@ class Description extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
-                  "Specifications",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  "Reviews",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 16,
-                  ),
-                ),
+                // Text(
+                //   "Specifications",
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.bold,
+                //     color: Colors.black,
+                //     fontSize: 16,
+                //   ),
+                // ),
+                // Text(
+                //   "Reviews",
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.bold,
+                //     color: Colors.black,
+                //     fontSize: 16,
+                //   ),
+                // ),
               ],
             ),
           ),

@@ -61,65 +61,65 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
-              SizedBox(
-                height: 130,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categoriesList.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = index;
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: selectedIndex == index ? Colors.blue : Colors.white,
-                          border: Border.all(color: Colors.white, width: 1.5),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: 65,
-                              width: 65,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: AssetImage(categoriesList[index].image),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              categoriesList[index].title,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: selectedIndex == index ? Colors.white : Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: 20),
+              // SizedBox(height: 20),
+              // SizedBox(
+              //   height: 130,
+                // child: ListView.builder(
+                //   scrollDirection: Axis.horizontal,
+                //   itemCount: categoriesList.length,
+                //   itemBuilder: (context, index) {
+                //     return GestureDetector(
+                //       onTap: () {
+                //         setState(() {
+                //           selectedIndex = index;
+                //         });
+                //       },
+                //       child: Container(
+                //         margin: EdgeInsets.only(right: 10),
+                //         padding: EdgeInsets.all(8),
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(15),
+                //           color: selectedIndex == index ? Colors.blue : Colors.white,
+                //           border: Border.all(color: Colors.white, width: 1.5),
+                //           boxShadow: [
+                //             BoxShadow(
+                //               color: Colors.grey.withOpacity(0.3),
+                //               spreadRadius: 2,
+                //               blurRadius: 5,
+                //             ),
+                //           ],
+                //         ),
+                //         child: Column(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: [
+                //             Container(
+                //               height: 65,
+                //               width: 65,
+                //               decoration: BoxDecoration(
+                //                 shape: BoxShape.circle,
+                //                 image: DecorationImage(
+                //                   image: AssetImage(categoriesList[index].image),
+                //                   fit: BoxFit.cover,
+                //                 ),
+                //               ),
+                //             ),
+                //             SizedBox(height: 10),
+                //             Text(
+                //               categoriesList[index].title,
+                //               style: TextStyle(
+                //                 fontSize: 14,
+                //                 fontWeight: FontWeight.w600,
+                //                 color: selectedIndex == index ? Colors.white : Colors.black,
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // ),
+              // ),
+              // SizedBox(height: 20),
               if (value.products.isNotEmpty)
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),

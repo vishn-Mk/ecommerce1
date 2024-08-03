@@ -27,13 +27,12 @@ class _CartScreenState extends State<CartScreen> {
             } else {
               provider.decrementQtn(index);
             }
-          },
-          );
+          });
         },
         child: Icon(
           icon,
           color: Colors.black,
-          size: 18,
+          size: 20,
         ),
       );
     }
@@ -41,174 +40,137 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       bottomSheet: CheckOutBox(),
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    style: IconButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      padding: const EdgeInsets.all(15),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BottomNavBar(),
-                        ),
-                      );
-                    },
-                    iconSize: 25,
-                    icon: const Icon(Icons.arrow_back_ios),
-                  ),
-                  const Text(
-                    "My Cart",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Container(), // Placeholder for alignment
-                ],
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BottomNavBar(),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: finalList.length,
-                itemBuilder: (context, index) {
-                  final cartItem = finalList[index];
-                  return Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                            borderRadius: BorderRadius.circular(20),
+            );
+          },
+        ),
+        title: const Text(
+          "My Cart",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: ListView.builder(
+          padding: const EdgeInsets.all(10),
+          itemCount: finalList.length,
+          itemBuilder: (context, index) {
+            final cartItem = finalList[index];
+            return Card(
+              elevation: 3,
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        cartItem.image!,
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            cartItem.title!,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
-                          padding: const EdgeInsets.all(20),
+                          const SizedBox(height: 5),
+                          Text(
+                            cartItem.category!,
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            "\$${cartItem.price}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            finalList.removeAt(index);
+                            setState(() {});
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          height: 35,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            color: kcontentColor,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: Colors.grey.shade300,
+                              width: 1,
+                            ),
+                          ),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                height: 120,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  color: kcontentColor,
-                                  borderRadius: BorderRadius.circular(20),
+                              productQuantity(Icons.remove, index),
+                              const SizedBox(width: 10),
+                              Text(
+                                cartItem.quantity.toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
-                                padding: const EdgeInsets.all(10),
-                                child: Image.network(cartItem.image!),
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    cartItem.title!,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    cartItem.category!,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                      color: Colors.grey.shade400,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    "\$${cartItem.price}",
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              const SizedBox(width: 10),
+                              productQuantity(Icons.add, index),
                             ],
                           ),
                         ),
-                      ),
-                      Positioned(
-                        top: 35,
-                        right: 35,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                finalList.removeAt(index);
-                                setState(() {});
-                              },
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                                size: 25,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: kcontentColor,
-                                border: Border.all(
-                                  color: Colors.grey.shade400,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  productQuantity(Icons.add, index),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    cartItem.quantity.toString(),
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  productQuantity(Icons.remove, index),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
