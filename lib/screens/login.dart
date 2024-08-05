@@ -164,7 +164,7 @@ class _LoginState extends State<Login> {
                         padding: EdgeInsets.symmetric(vertical: 15),
                         minimumSize: Size(double.infinity, 50),
                       ),
-                      icon: Image.asset('assets/images/Group 108.png',
+                      icon: Image.asset('asset/images/google-logo-9808.png',
                           height: 24),
                       label: Text(
                         'Sign in with Google',

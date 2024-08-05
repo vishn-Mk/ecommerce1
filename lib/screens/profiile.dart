@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'edit profile.dart';
-import 'orderhistory.dart';
 
+import 'login.dart';
+import 'orderhistory.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EditScreen (
+        builder: (context) => EditScreen(
           name: name,
           email: email,
           phoneNumber: phoneNumber,
@@ -33,6 +34,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
         phoneNumber = result['phoneNumber'];
       });
     }
+  }
+
+  void _confirmLogout() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Logout"),
+          content: Text("Are you sure you want to log out?"),
+          actions: [
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: Text("Logout"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange[900],
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -118,7 +154,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     trailing: Icon(Icons.arrow_forward),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => OrderHistoryScreen(),));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OrderHistoryScreen(),
+                        ),
+                      );
                       // Navigate to Order History Screen
                     },
                   ),
@@ -134,9 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(height: 20),
             // Logout Button
             ElevatedButton(
-              onPressed: () {
-                // Handle logout
-              },
+              onPressed: _confirmLogout,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange[900],
                 padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),

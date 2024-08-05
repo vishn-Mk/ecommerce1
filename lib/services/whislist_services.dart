@@ -8,13 +8,13 @@ import '../models/product_model.dart';
 import '../utils/constants.dart';
 
 
-class CartService {
+class whislistViewModel {
   // Add product to cart
   Future<void> addProductToCart({
     required String userid,
     required ProductModel product,
   }) async {
-    final Uri url = Uri.parse('$baseurl/api/cart/addItem');
+    final Uri url = Uri.parse('$baseurl/api/wishlist/addItem');
     print("Product ID: ${product.sId}");
     print("Product Category: ${product.category}");
 
@@ -44,7 +44,7 @@ class CartService {
 
   // Fetch cart contents for a user
   Future<List<CartModel>> getCartContents(String userid) async {
-    final Uri url = Uri.parse('$baseurl/api/cart/viewCart/${userid}');
+    final Uri url = Uri.parse('$baseurl/api/wishlist/viewItems/${userid}');
 
     try {
       final response = await http.get(url);
@@ -77,7 +77,7 @@ class CartService {
     required String productId,
   }) async {
     final Uri url =
-    Uri.parse('$baseurl/api/cart/removeFromCart/$userid/$productId');
+    Uri.parse('$baseurl/api/wishlist/removeItem/$userid/$productId');
     final Map<String, dynamic> cartData = {
       'userid': userid,
       'productId': productId,
@@ -104,22 +104,7 @@ class CartService {
   }
 
   // Increase product quantity
-  static Future<void> updateCartItemQuantity(
-      String itemId, int newQuantity) async {
-    final url = Uri.parse('$baseurl/api/cart/updateItem/$itemId');
-    final response = await http.put(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({'quantity': newQuantity}),
-    );
-
-    print('Status code: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to update cart item quantity');
-    }
-  } Future<bool> deleteItem(String itemId) async {
+   Future<bool> deleteItem(String itemId) async {
     final response = await http.delete(
       Uri.parse('$baseurl/api/cart/removeItem/$itemId'),
     );

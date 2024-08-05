@@ -1,9 +1,11 @@
-import 'package:ecommerce/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
 
 import '../models/auth_model.dart';
+
 import '../screens/login.dart';
+
 import '../services/auth_services.dart';
+import '../widgets/bottom_nav.dart';
 
 class AuthViewModel extends ChangeNotifier {
   bool loading = false;
@@ -14,7 +16,7 @@ class AuthViewModel extends ChangeNotifier {
     try {
       loading = true;
       notifyListeners();
-      await _authService.register(auth: auth);
+      await _authService.register(user: auth);
 
       loading = false;
       notifyListeners();

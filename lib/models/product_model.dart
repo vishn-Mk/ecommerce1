@@ -33,8 +33,8 @@ class ProductModel {
     category = json['category'];
      rate = json['rate'].toString();
     quantity = int.parse(json['quantity']);
-    // sId = json['_id'];
-    // iV = json['__v'];
+    sId = json['_id'];
+     iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {

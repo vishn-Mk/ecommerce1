@@ -83,7 +83,7 @@ class ItemDetails extends StatelessWidget {
             const Spacer(),
             Text.rich(
 
-              TextSpan(children: [TextSpan( text: "Seller:",
+              TextSpan(children: [TextSpan( text: "Seller:vishnu",
                 style: TextStyle(
                   fontSize: 16,
                 ),

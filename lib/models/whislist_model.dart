@@ -1,6 +1,6 @@
 import 'package:ecommerce/models/product_model.dart';
 
-class CartModel {
+class whislistModel {
   String? sId;
   ProductModel? productId;
   String? userId;
@@ -8,7 +8,7 @@ class CartModel {
   int? quantity;
   int? iV;
 
-  CartModel(
+  whislistModel(
       {this.sId,
         this.productId,
         this.userId,
@@ -16,7 +16,7 @@ class CartModel {
         this.quantity,
         this.iV});
 
-  CartModel.fromJson(Map<String, dynamic> json) {
+  whislistModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     productId = json['productId'] != null
         ? new ProductModel.fromJson(json['productId'])

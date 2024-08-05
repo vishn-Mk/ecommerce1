@@ -5,7 +5,7 @@ import '../models/cart_model.dart';
 import '../models/product_model.dart';
 import '../services/cart_services.dart';
 
-class CartViewModel extends ChangeNotifier {
+class whislistViewModel extends ChangeNotifier {
   bool loading = false;
   List<CartModel> cartItems = [];
   List<ProductModel> cartData = [];
@@ -14,7 +14,7 @@ class CartViewModel extends ChangeNotifier {
 
   // Add product to cart
   // Add product to cart
-  Future<void> addProductToCart({
+  Future<void> addItem({
     required String userid,
     required ProductModel product,
     required BuildContext context,
@@ -69,7 +69,7 @@ class CartViewModel extends ChangeNotifier {
   }
 
   // Remove product from cart
-  Future<void> removeProductFromCart({
+  Future<void> removeItem({
     required String userid,
     required String productId,
     required BuildContext context,
@@ -95,27 +95,7 @@ class CartViewModel extends ChangeNotifier {
   }
 
   // Increase product quantity
-  Future<void> updateCartItemQuantity(
-      String itemId, int newQuantity, BuildContext context) async {
-    loading = true;
-    notifyListeners();
-    try {
-      await CartService.updateCartItemQuantity(itemId, newQuantity);
 
-      final itemIndex = cartItems.indexWhere((item) => item.sId == itemId);
-      if (itemIndex != -1) {
-        cartItems[itemIndex].quantity = newQuantity;
-        notifyListeners();
-      } else {
-        print('Item not found in cart');
-      }
-    } catch (error) {
-      print('Error updating cart item quantity: $error');
-    } finally {
-      loading = false;
-      notifyListeners();
-    }
-  }
   Future<void> deleteCartItem(String itemId, BuildContext context) async {
     try {
       loading = true;
