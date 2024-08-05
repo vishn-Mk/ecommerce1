@@ -93,7 +93,7 @@ class _SignUpState extends State<SignUp> {
                         }
                         return null;
                       },
-                    ),
+                    ),SizedBox(height: 20),
                     custom_textfeild(
                       controller: usernameController,
                       labeltext: 'Username',
@@ -134,7 +134,7 @@ class _SignUpState extends State<SignUp> {
                         }
                         return null;
                       },
-                    ),
+                    ),SizedBox(height: 20),
                     custom_textfeild(
                       controller: passwordController,
                       labeltext: 'Password',
@@ -176,9 +176,9 @@ class _SignUpState extends State<SignUp> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: Colors.black,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                           padding: EdgeInsets.symmetric(vertical: 15),
                           minimumSize: Size(double.infinity, 50),
@@ -197,13 +197,13 @@ class _SignUpState extends State<SignUp> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           side: BorderSide.none,
                         ),
                         padding: EdgeInsets.symmetric(vertical: 15),
                         minimumSize: Size(double.infinity, 50),
                       ),
-                      icon: Image.asset('assets/images/Group 108.png',
+                      icon: Image.asset('asset/images/google-logo-9808.png',
                           height: 24),
                       label: Text(
                         'Sign in with Google',

@@ -10,7 +10,7 @@ import '../utils/constants.dart';
 
 class whislistViewModel {
   // Add product to cart
-  Future<void> addProductToCart({
+  Future<void> addItem({
     required String userid,
     required ProductModel product,
   }) async {

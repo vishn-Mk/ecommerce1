@@ -41,10 +41,10 @@ class _LoginState extends State<Login> {
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.black,
-                ),
+                // child: Icon(
+                //   Icons.arrow_back_ios,
+                //   color: Colors.black,
+                // ),
               ),
             ),
             // Add some spacing if needed
@@ -70,19 +70,19 @@ class _LoginState extends State<Login> {
 
                     // Welcome Text
                     Text(
-                      'Hello Again!',
+                      'LOGIN',
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      "Welcome Back You've Been Missed!",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    ),
+                    // Text(
+                    //   "Welcome Back You've Been Missed!",
+                    //   style: TextStyle(
+                    //     fontSize: 16,
+                    //     color: Colors.grey,
+                    //   ),
+                    // ),
 
                     SizedBox(height: 30),
 
@@ -136,9 +136,9 @@ class _LoginState extends State<Login> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: Colors.black,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                           padding: EdgeInsets.symmetric(vertical: 15),
                           minimumSize: Size(double.infinity, 50),
@@ -158,7 +158,7 @@ class _LoginState extends State<Login> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           side: BorderSide.none,
                         ),
                         padding: EdgeInsets.symmetric(vertical: 15),

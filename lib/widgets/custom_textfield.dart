@@ -38,7 +38,7 @@ class _custom_textfeildState extends State<custom_textfeild> {
       decoration: InputDecoration(
         labelText: widget.labeltext,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         fillColor: Colors.white,
         filled: true,

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
+import '../screens/payment.dart';
+import '../screens/success.dart';
 import '../utils/constants.dart';
 import '../view_model/cart_viewmodel.dart';
 
@@ -115,7 +117,9 @@ class CheckOutBox extends StatelessWidget {
                 backgroundColor: Colors.black,
                 minimumSize: const Size(double.infinity, 55),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Payment()));
+              },
               child: const Text(
                 "Check Out",
                 style: TextStyle(
