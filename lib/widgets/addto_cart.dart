@@ -116,7 +116,7 @@ class _AddToCartState extends State<AddToCart> {
               child: Container(
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.yellow[900],
+                  color: Colors.blue,
                   borderRadius: BorderRadius.circular(50),
                 ),
                 alignment: Alignment.center,

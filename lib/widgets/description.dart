@@ -21,7 +21,7 @@ class Description extends StatelessWidget {
                   width: 120,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: kprimaryColor,
+                    color: Colors.blue,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   alignment: Alignment.center,

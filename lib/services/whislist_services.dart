@@ -3,63 +3,33 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 
-import '../models/cart_model.dart';
 import '../models/product_model.dart';
+
+import '../models/whislist_model.dart';
+
 import '../utils/constants.dart';
 
-
-class whislistViewModel {
-  // Add product to cart
-  Future<void> addItem({
-    required String userid,
-    required ProductModel product,
-  }) async {
-    final Uri url = Uri.parse('$baseurl/api/wishlist/addItem');
-    print("Product ID: ${product.sId}");
-    print("Product Category: ${product.category}");
-
-    final Map<String, dynamic> cartData = {
-      'userId': userid,
-      'productId': product.sId,
-      'quantity': product.quantity.toString(),
-    };
-
-    try {
-      final response = await http.post(url, body: cartData);
-      print("Response Status Code: ${response.statusCode}");
-      print("Response Body: ${response.body}");
-
-      if (response.statusCode == 201) {
-        print('Product added to cart successfully');
-      } else {
-        print('Failed to add product to cart');
-        throw Exception('Failed to add product to cart');
-      }
-    } catch (e) {
-      print("Error: $e");
-      throw Exception('An error occurred: $e');
-    }
-  }
-
-
+class WishService {
   // Fetch cart contents for a user
-  Future<List<CartModel>> getCartContents(String userid) async {
-    final Uri url = Uri.parse('$baseurl/api/wishlist/viewItems/${userid}');
+  Future<List<WishModel>> getWishContents(String userid) async {
+    final Uri url = Uri.parse('$baseurl/api/products/wishlist/viewItems/$userid');
 
     try {
       final response = await http.get(url);
+      print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+      print("ccccccccccccccc${response.body}");
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
         print('Response data: $data');
 
         if (data['data'] is List) {
-          var cartList = (data['data'] as List)
-              .map((item) => CartModel.fromJson(item as Map<String, dynamic>))
+          var wishList = (data['data'] as List)
+              .map((item) => WishModel.fromJson(item as Map<String, dynamic>))
               .toList();
-          print('Cart list: $cartList');
+          print('Wish list: $wishList');
 
-          return cartList;
+          return wishList;
         } else {
           throw Exception('The key "data" is missing or the list is null');
         }
@@ -71,46 +41,43 @@ class whislistViewModel {
     }
   }
 
-  // Remove product from cart
-  Future<void> removeProductFromCart({
-    required String userid,
-    required String productId,
-  }) async {
-    final Uri url =
-    Uri.parse('$baseurl/api/wishlist/removeItem/$userid/$productId');
-    final Map<String, dynamic> cartData = {
-      'userid': userid,
-      'productId': productId,
-    };
-
-    print(userid);
-    print(productId);
-
-    try {
-      final response = await http.delete(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(cartData),
-      );
-
-      if (response.statusCode == 200) {
-        print('Product removed from cart successfully');
-      } else {
-        throw Exception('Failed to remove product from cart-');
-      }
-    } catch (e) {
-      throw Exception('An error occurred: $e');
-    }
-  }
-
-  // Increase product quantity
-   Future<bool> deleteItem(String itemId) async {
+//delete product from wishlist
+  Future<bool> deleteItem(String itemId) async {
     final response = await http.delete(
-      Uri.parse('$baseurl/api/cart/removeItem/$itemId'),
+      Uri.parse('$baseurl/api/wishlist/removeItem/$itemId'),
     );
+    print(
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb${response.body}");
 
     return response.statusCode == 200;
   }
 
-}
+  // add item to wishlist
 
+  Future<void> addProductToWish(
+      {required String userid, required ProductModel product}) async {
+    final Uri url = Uri.parse('$baseurl/api/wishlist/addItem');
+    print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb${product.sId}");
+
+    final Map<String, dynamic> cartData = {
+      'userId': userid,
+      'productId': product.sId,
+    };
+
+    try {
+      final response = await http.post(url, body: cartData);
+      print(response.statusCode);
+      print(response.body);
+
+      if (response.statusCode == 201) {
+        print('Product added to cart successfully');
+      } else {
+        print('3');
+        throw Exception('Failed to add product to cart');
+      }
+    } catch (e) {
+      print(e);
+      throw Exception('An error occurred: $e');
+    }
+  }
+}

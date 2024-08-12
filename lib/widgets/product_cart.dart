@@ -1,10 +1,11 @@
-import 'package:ecommerce/screens/Details.dart';
-import 'package:ecommerce/utils/constants.dart';
-import 'package:ecommerce/utils/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/product_model.dart';
 import '../provider/favorite_provider.dart';
+import '../services/auth_services.dart';
+import '../view_model/whislist_viewmodel.dart';
+import '../screens/Details.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
@@ -12,7 +13,10 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wishProvider = context.watch<WishViewModel>();
+    final authService = AuthServices();
     final provider = FavoriteProvider.of(context);
+
     return SingleChildScrollView(
       child: GestureDetector(
         onTap: () {
@@ -29,14 +33,13 @@ class ProductCard extends StatelessWidget {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.grey[50]),
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 5,
-                  ),
+                  SizedBox(height: 5),
                   Center(
                     child: Hero(
                       tag: product.image!,
@@ -48,9 +51,7 @@ class ProductCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: 10),
                   Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
@@ -61,9 +62,7 @@ class ProductCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 7,
-                  ),
+                  SizedBox(height: 7),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -74,41 +73,60 @@ class ProductCard extends StatelessWidget {
                           fontSize: 16,
                         ),
                       ),
-
                     ],
                   ),
                 ],
               ),
-            ), // for favorite icon
+            ),
+            // For favorite icon
             Positioned(
-                child: Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                height: 35,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: kprimaryColor,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(
-                      20,
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  height: 35,
+                  width: 40,
+                  child: GestureDetector(
+                    onTap: ()  async{
+
+
+                      // Toggle the favorite state
+                      provider.toggleFavorite(product);
+
+                      // Ensure userId is available
+                      final userId = authService.userId;
+                      if (userId == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('User not logged in')),
+                        );
+                        return;
+                      }
+
+                      // Add product to wishlist
+                      try {
+                        await wishProvider.addProductToWish(
+                          userId: userId,
+                          product: product,
+                          context: context, userid: '',
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Failed to add to wishlist: $e'),
+                          ),
+                        );
+                      }
+                    },
+                    child: Icon(
+                      provider.isExist(product)
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: Colors.blue[500],
+                      size: 22,
                     ),
-                    bottomLeft: Radius.circular(10),
-                  ),
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    provider.toggleFavorite(product);
-                  },
-                  child: Icon(
-                    provider.isExist(product) ?
-                    Icons.favorite:
-                    Icons.favorite_border,
-                    color: Colors.white,
-                    size: 22,
                   ),
                 ),
               ),
-            ))
+            ),
           ],
         ),
       ),

@@ -88,4 +88,6 @@ class AuthServices {
       throw Exception('An error occurred during login');
     }
   }
+
+
 }

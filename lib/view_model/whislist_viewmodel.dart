@@ -1,61 +1,35 @@
 import 'package:flutter/material.dart';
 
-
-import '../models/cart_model.dart';
 import '../models/product_model.dart';
-import '../services/cart_services.dart';
 
-class whislistViewModel extends ChangeNotifier {
+import '../models/whislist_model.dart';
+
+import '../services/whislist_services.dart';
+
+
+class WishViewModel extends ChangeNotifier {
   bool loading = false;
-  List<CartModel> cartItems = [];
-  List<ProductModel> cartData = [];
+  List<WishModel> wishItems = [];
+  List<ProductModel> wishData = [];
 
-  final _cartService = CartService();
+  final _wishService = WishService();
 
-  // Add product to cart
-  // Add product to cart
-  Future<void> addItem({
-    required String userid,
-    required ProductModel product,
-    required BuildContext context,
-  }) async {
-    try {
-      loading = true;
-      notifyListeners();
-
-      await _cartService.addProductToCart(userid: userid, product: product);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Product added to cart successfully"),
-        ),
-      );
-
-      Navigator.pop(context);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to add product to cart: $e"),
-      ));
-    } finally {
-      loading = false;
-      notifyListeners();
-    }
-  }
-  // Fetch cart contents for a user
-  Future<void> fetchCartContents(String userid, BuildContext context) async {
+  Future<void> fetchWishContents(String userid, BuildContext context) async {
     loading = true;
     notifyListeners();
 
     try {
       // Fetch cart contents
-      cartItems = await _cartService.getCartContents(userid);
+      wishItems = await _wishService.getWishContents(userid);
 
       // Clear previous cartData
-      cartData.clear();
+      wishData.clear();
 
       // Populate cartData with the latest items
-      for (var cartItem in cartItems) {
-        cartData.add(cartItem.productId! as ProductModel);
+      for (var wishItem in wishItems) {
+        wishData.add(wishItem.productId!);
       }
+      print("hiiiiiiiiiiiiiiii${wishData.length}");
 
       notifyListeners();
     } catch (e) {
@@ -68,44 +42,17 @@ class whislistViewModel extends ChangeNotifier {
     }
   }
 
-  // Remove product from cart
-  Future<void> removeItem({
-    required String userid,
-    required String productId,
-    required BuildContext context,
-  }) async {
+  Future<void> deleteWishItem(String itemId, BuildContext context) async {
     try {
-      loading = true;
-      notifyListeners();
-      await _cartService.removeProductFromCart(
-          userid: userid, productId: productId);
-      // Update the local cartItems list after successful removal
-      cartItems.removeWhere((item) => item.productId?.sId == productId);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Product removed from cart successfully"),
-      ));
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to remove product from cart: $e"),
-      ));
-    } finally {
-      loading = false;
-      notifyListeners();
-    }
-  }
-
-  // Increase product quantity
-
-  Future<void> deleteCartItem(String itemId, BuildContext context) async {
-    try {
+      print("gggggggggggggggggggggggggggggggggg${itemId}");
       loading = true;
       notifyListeners();
 
-      bool isSuccess = await _cartService.deleteItem(itemId);
+      bool isSuccess = await _wishService.deleteItem(itemId);
 
       if (isSuccess) {
         // Remove the item from the local list
-        cartItems.removeWhere((item) => item.sId == itemId);
+        wishItems.removeWhere((item) => item?.sId == itemId);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Item deleted successfully.')),
         );
@@ -119,6 +66,33 @@ class whislistViewModel extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: ${e.toString()}')),
       );
+    } finally {
+      loading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> addProductToWish({
+    required String userId,
+    required ProductModel product,
+    required BuildContext context, required String userid,
+  }) async {
+    try {
+      loading = true;
+      notifyListeners();
+
+      await _wishService.addProductToWish(userid: userId, product: product);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Product added to wishlist successfully"),
+        ),
+      );
+
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Failed to add product to wishlist: $e"),
+      ));
     } finally {
       loading = false;
       notifyListeners();

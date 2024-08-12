@@ -1,8 +1,11 @@
 import 'package:ecommerce/provider/favorite_provider.dart';
 import 'package:ecommerce/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../provider/provider_cart.dart';
+import '../services/auth_services.dart';
+import '../view_model/whislist_viewmodel.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -12,8 +15,28 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
+  Future<void>? _loadDataFuture;
+  @override
+  void initState() {
+    super.initState();
+    _loadDataFuture = _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final authService = AuthServices();
+    var id = await authService; // Wait for userId to load
+    final wishProvider = Provider.of<WishViewModel>(context, listen: false);
+    if (authService.userId != null) {
+      await wishProvider.fetchWishContents(authService.userId!, context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final wishprovider = context.watch<WishViewModel>();
+    void deleteItem(String itemId) async {
+      await wishprovider.deleteWishItem(itemId, context);
+    }
     final provider = FavoriteProvider.of(context);
     final finalList = provider.favorite;
 
@@ -30,9 +53,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: finalList.length,
+              itemCount: wishprovider.wishItems.length,
               itemBuilder: (context, index) {
-                final cartItem = finalList[index];
+                var item = wishprovider.wishItems[index];
                 return Stack(
                   children: [
                     Padding(
@@ -54,7 +77,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               padding: const EdgeInsets.all(10),
-                              child: Image.network(cartItem.image!),
+                              child: Image.network( wishprovider.wishData[index].image!),
                             ),
                             const SizedBox(
                               width: 10,
@@ -63,7 +86,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  cartItem.title!,
+                                  wishprovider.wishData[index].title!,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -73,7 +96,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                   height: 5,
                                 ),
                                 Text(
-                                  cartItem.category!,
+                                  wishprovider.wishData[index].category!,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 14,
@@ -84,7 +107,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                   height: 5,
                                 ),
                                 Text(
-                                  "\$${cartItem.price}",
+                                  "\$${ wishprovider.wishData[index].price}",
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 14,
@@ -104,7 +127,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              finalList.removeAt(index);
+                              String itemId = item.sId ?? '';
+                              deleteItem(itemId);
                               setState(() {});
                             },
                             icon: const Icon(
@@ -113,7 +137,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               size: 25,
                             ),
                           ),
-                           SizedBox(
+                          SizedBox(
                             height: 10,
                           ),
                         ],

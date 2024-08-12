@@ -5,6 +5,7 @@ import 'package:ecommerce/screens/Home.dart';
 import 'package:ecommerce/utils/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../screens/ChatBot.dart';
 import '../screens/profiile.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -15,10 +16,11 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int currentIndex = 1; // Set to 'Home' to open HomeScreen by default
+  int currentIndex = 2; // Set to 'Home' to open HomeScreen by default
 
   // Updated list of screens
   final List<Widget> screens = [
+    ChatScreen(),
     FavoriteScreen(),
     HomeScreen(),
     CartScreen(),
@@ -36,10 +38,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
             currentIndex = index;
           });
         },
-        selectedItemColor: kprimaryColor,
+        selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey.shade400,
         showUnselectedLabels: true,
         items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_outlined),
+            label: 'ChatBot',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border),
             label: 'Favorite',

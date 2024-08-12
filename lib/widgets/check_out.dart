@@ -114,7 +114,7 @@ class CheckOutBox extends StatelessWidget {
           const SizedBox(height: 50),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
+                backgroundColor: Colors.blue,
                 minimumSize: const Size(double.infinity, 55),
               ),
               onPressed: () {

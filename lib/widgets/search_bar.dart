@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/product_model.dart';
 
 class MySearchBar extends StatefulWidget {
   const MySearchBar({super.key});
@@ -9,11 +10,37 @@ class MySearchBar extends StatefulWidget {
 
 class _MySearchBarState extends State<MySearchBar> {
   final TextEditingController _controller = TextEditingController();
+  List<ProductModel> allProducts = [];
+  List<ProductModel> filteredProducts = [];
 
-  void _onSearch(String query) {
-    // Handle the search query
-    print("Searching for: $query");
-    // You can add your search logic here, e.g., API call, filtering list, etc.
+  @override
+  void initState() {
+    super.initState();
+    // Example initialization of allProducts. Replace with actual data fetching logic.
+    allProducts = [
+
+      // Add more products here
+    ];
+    filteredProducts = allProducts;
+
+    _controller.addListener(_filterProducts);
+  }
+
+  void _filterProducts() {
+    final query = _controller.text.toLowerCase();
+    setState(() {
+      filteredProducts = allProducts.where((product) {
+        final title = product.title?.toLowerCase() ?? '';
+        return title.contains(query);
+      }).toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_filterProducts);
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -22,7 +49,7 @@ class _MySearchBarState extends State<MySearchBar> {
       height: 55,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(30),
       ),
       padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
@@ -30,7 +57,7 @@ class _MySearchBarState extends State<MySearchBar> {
         children: [
           Icon(
             Icons.search,
-            color: Colors.grey,
+            color: Colors.black,
             size: 30,
           ),
           SizedBox(
@@ -44,31 +71,25 @@ class _MySearchBarState extends State<MySearchBar> {
                 hintText: 'Search...',
                 border: InputBorder.none,
               ),
-              onSubmitted: _onSearch, // Call _onSearch when the user submits the query
+              onChanged: (query) => _filterProducts(), // Call _filterProducts on text change
             ),
           ),
           Container(
             height: 25,
             width: 1.5,
-            color: Colors.grey,
+            color: Colors.black,
           ),
           IconButton(
             onPressed: () {
-              _onSearch(_controller.text); // Call _onSearch when the button is pressed
+              _filterProducts(); // Call _filterProducts when the button is pressed
             },
             icon: Icon(
               Icons.tune,
-              color: Colors.grey,
+              color: Colors.black,
             ),
           ),
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }

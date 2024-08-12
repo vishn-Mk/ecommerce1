@@ -45,7 +45,7 @@ class ItemDetails extends StatelessWidget {
                       height: 25,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: Colors.orange[800]),
+                          color: Colors.blue),
                       alignment: Alignment.center,
                       padding: EdgeInsets.symmetric(horizontal: 5),
                       child: Row(

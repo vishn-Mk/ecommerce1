@@ -74,7 +74,7 @@ class _EditScreenState extends State<EditScreen> {
             ElevatedButton(
               onPressed: _saveChanges,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange[900],
+                backgroundColor: Colors.blue,
                 padding: EdgeInsets.symmetric(vertical: 14, horizontal: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
