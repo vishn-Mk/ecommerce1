@@ -14,19 +14,20 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wishProvider = context.watch<WishViewModel>();
+    final provider = Provider.of<FavoriteProvider>(context);
     final authService = AuthServices();
-    final provider = FavoriteProvider.of(context);
 
     return SingleChildScrollView(
       child: GestureDetector(
         onTap: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailsScreen(
-                  product: product,
-                ),
-              ));
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailsScreen(
+                product: product,
+              ),
+            ),
+          );
         },
         child: Stack(
           children: [
@@ -86,33 +87,38 @@ class ProductCard extends StatelessWidget {
                   height: 35,
                   width: 40,
                   child: GestureDetector(
-                    onTap: ()  async{
-
-
-                      // Toggle the favorite state
-                      provider.toggleFavorite(product);
-
-                      // Ensure userId is available
-                      final userId = authService.userId;
-                      if (userId == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('User not logged in')),
-                        );
-                        return;
-                      }
-
-                      // Add product to wishlist
+                    onTap: () async {
                       try {
+                        provider.toggleFavorite(product);
+
+                        final userId = await authService.userId;
+                        if (userId == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('User not logged in')),
+                          );
+                          return;
+                        }
+
+                        ProductModel newproduct = ProductModel(
+                          title: product.title,
+                          image: product.image,
+                          price: product.price,
+                          sId: product.sId,
+                          quantity: product.quantity,
+                        );
+
                         await wishProvider.addProductToWish(
                           userId: userId,
-                          product: product,
-                          context: context, userid: '',
+                          product: newproduct,
+                          context: context,
+                        );
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Product added to wishlist')),
                         );
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Failed to add to wishlist: $e'),
-                          ),
+                          SnackBar(content: Text('Failed to add to wishlist: $e')),
                         );
                       }
                     },
@@ -123,7 +129,8 @@ class ProductCard extends StatelessWidget {
                       color: Colors.blue[500],
                       size: 22,
                     ),
-                  ),
+                  )
+
                 ),
               ),
             ),

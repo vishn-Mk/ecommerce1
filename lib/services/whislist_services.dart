@@ -1,23 +1,16 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
-
 import '../models/product_model.dart';
-
 import '../models/whislist_model.dart';
-
 import '../utils/constants.dart';
 
 class WishService {
-  // Fetch cart contents for a user
-  Future<List<WishModel>> getWishContents(String userid) async {
-    final Uri url = Uri.parse('$baseurl/api/products/wishlist/viewItems/$userid');
+  // Fetch wishlist contents for a user
+  Future<List<WishModel>> getWishContents(String userId) async {
+    final Uri url = Uri.parse('$baseurl/api/products/wishlist/viewItems/$userId');
 
     try {
       final response = await http.get(url);
-      print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-      print("ccccccccccccccc${response.body}");
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
@@ -28,52 +21,50 @@ class WishService {
               .map((item) => WishModel.fromJson(item as Map<String, dynamic>))
               .toList();
           print('Wish list: $wishList');
-
           return wishList;
         } else {
           throw Exception('The key "data" is missing or the list is null');
         }
       } else {
-        throw Exception('Failed to load cart contents');
+        throw Exception('Failed to load wishlist contents');
       }
     } catch (e) {
       throw Exception('An error occurred: $e');
     }
   }
 
-//delete product from wishlist
+  // Delete product from wishlist
   Future<bool> deleteItem(String itemId) async {
     final response = await http.delete(
-      Uri.parse('$baseurl/api/wishlist/removeItem/$itemId'),
+      Uri.parse('$baseurl/api/products/wishlist/removeItem/$itemId'),
     );
-    print(
-        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb${response.body}");
 
     return response.statusCode == 200;
   }
 
-  // add item to wishlist
-
-  Future<void> addProductToWish(
-      {required String userid, required ProductModel product}) async {
-    final Uri url = Uri.parse('$baseurl/api/wishlist/addItem');
-    print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb${product.sId}");
+  // Add item to wishlist
+  Future<void> addProductToWish({
+    required String userId,
+    required ProductModel product,
+  }) async {
+    final Uri url = Uri.parse('$baseurl/api/products/wishlist/addItem');
 
     final Map<String, dynamic> cartData = {
-      'userId': userid,
+      'userId': userId,
       'productId': product.sId,
     };
 
     try {
-      final response = await http.post(url, body: cartData);
-      print(response.statusCode);
-      print(response.body);
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},  // Ensure JSON content type
+        body: jsonEncode(cartData),  // Encode the body to JSON
+      );
 
       if (response.statusCode == 201) {
-        print('Product added to cart successfully');
+        print('Product added to wishlist successfully');
       } else {
-        print('3');
-        throw Exception('Failed to add product to cart');
+        throw Exception('Failed to add product to wishlist');
       }
     } catch (e) {
       print(e);

@@ -15,7 +15,8 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  Future<void>? _loadDataFuture;
+  late Future<void> _loadDataFuture;
+
   @override
   void initState() {
     super.initState();
@@ -24,38 +25,50 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   Future<void> _loadData() async {
     final authService = AuthServices();
-    var id = await authService; // Wait for userId to load
+    final userId = await authService.userId; // Get user ID
     final wishProvider = Provider.of<WishViewModel>(context, listen: false);
-    if (authService.userId != null) {
-      await wishProvider.fetchWishContents(authService.userId!, context);
+    if (userId != null) {
+      await wishProvider.fetchWishContents(userId, context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final wishprovider = context.watch<WishViewModel>();
+    final wishProvider = context.watch<WishViewModel>();
+    final provider = Provider.of<FavoriteProvider>(context);
+    final finalList = provider.favorites;
+
     void deleteItem(String itemId) async {
-      await wishprovider.deleteWishItem(itemId, context);
+      await wishProvider.deleteWishItem(itemId, context);
+      setState(() {});
     }
-    final provider = FavoriteProvider.of(context);
-    final finalList = provider.favorite;
 
     return Scaffold(
       backgroundColor: kcontentColor,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Favorite",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: wishprovider.wishItems.length,
+      body: FutureBuilder<void>(
+        future: _loadDataFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: wishProvider.wishItems.length,
               itemBuilder: (context, index) {
-                var item = wishprovider.wishItems[index];
+                var item = wishProvider.wishItems[index];
                 return Stack(
                   children: [
                     Padding(
@@ -77,7 +90,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               padding: const EdgeInsets.all(10),
-                              child: Image.network( wishprovider.wishData[index].image!),
+                              child: Image.network(
+                                wishProvider.wishData[index].image!,
+                              ),
                             ),
                             const SizedBox(
                               width: 10,
@@ -86,7 +101,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  wishprovider.wishData[index].title!,
+                                  wishProvider.wishData[index].title!,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -96,7 +111,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                   height: 5,
                                 ),
                                 Text(
-                                  wishprovider.wishData[index].category!,
+                                  wishProvider.wishData[index].category!,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 14,
@@ -107,7 +122,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                   height: 5,
                                 ),
                                 Text(
-                                  "\$${ wishprovider.wishData[index].price}",
+                                  "\$${wishProvider.wishData[index].price}",
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 14,
@@ -129,7 +144,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             onPressed: () {
                               String itemId = item.sId ?? '';
                               deleteItem(itemId);
-                              setState(() {});
                             },
                             icon: const Icon(
                               Icons.delete,
@@ -137,18 +151,16 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               size: 25,
                             ),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
+                          const SizedBox(height: 10),
                         ],
                       ),
                     ),
                   ],
                 );
               },
-            ),
-          ),
-        ],
+            );
+          }
+        },
       ),
     );
   }
