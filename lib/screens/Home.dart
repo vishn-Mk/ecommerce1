@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.grey[100],
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(6),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -72,22 +72,37 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
 
-              if (value.loading)
-                const Center(child: CircularProgressIndicator())
-              else if (displayedProducts.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    'Special for You',
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+              if (selectedIndex == 0)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      // Check if the products list is not empty before accessing
+                      "Explore All Items",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black),
                     ),
-                  ),
-                )
-              else
-                const Center(child: Text('No products available')),
+                  ],
+                ),
+
+              // if (value.loading)
+              //   const Center(child: CircularProgressIndicator())
+              // else if (displayedProducts.isNotEmpty)
+              //   Padding(
+              //     padding: const EdgeInsets.symmetric(vertical: 10),
+              //     child: Text(
+              //       'Special for You',
+              //       style: const TextStyle(
+              //         fontSize: 22,
+              //         fontWeight: FontWeight.bold,
+              //         color: Colors.black,
+              //       ),
+              //     ),
+              //   )
+              // else
+              //   const Center(child: Text('No products available')),
               GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,

@@ -1,4 +1,5 @@
 import 'package:confetti/confetti.dart';
+import 'package:ecommerce/screens/login.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/Cart.dart';
@@ -88,6 +89,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CartScreen()),
+                );
+                _showFireworks(); // Trigger fireworks when Cart is selected
+              }
+              else if (value == "Logout") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Login()),
                 );
                 _showFireworks(); // Trigger fireworks when Cart is selected
               }
