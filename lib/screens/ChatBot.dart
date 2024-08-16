@@ -64,7 +64,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("GeminiAi",style: TextStyle(color: Colors.black),),),
+    return Scaffold(
       body: Stack(
         children: [
           // Background image

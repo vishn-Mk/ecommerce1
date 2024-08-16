@@ -10,38 +10,22 @@ class MySearchBar extends StatefulWidget {
 
 class _MySearchBarState extends State<MySearchBar> {
   final TextEditingController _controller = TextEditingController();
-  List<ProductModel> allProducts = [];
-  List<ProductModel> filteredProducts = [];
+
 
   @override
   void initState() {
     super.initState();
     // Example initialization of allProducts. Replace with actual data fetching logic.
-    allProducts = [
 
-      // Add more products here
-    ];
-    filteredProducts = allProducts;
 
-    _controller.addListener(_filterProducts);
+
+
   }
 
-  void _filterProducts() {
-    final query = _controller.text.toLowerCase();
-    setState(() {
-      filteredProducts = allProducts.where((product) {
-        final title = product.title?.toLowerCase() ?? '';
-        return title.contains(query);
-      }).toList();
-    });
-  }
+
 
   @override
-  void dispose() {
-    _controller.removeListener(_filterProducts);
-    _controller.dispose();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +55,7 @@ class _MySearchBarState extends State<MySearchBar> {
                 hintText: 'Search...',
                 border: InputBorder.none,
               ),
-              onChanged: (query) => _filterProducts(), // Call _filterProducts on text change
+              // Call _filterProducts on text change
             ),
           ),
           Container(
@@ -81,7 +65,7 @@ class _MySearchBarState extends State<MySearchBar> {
           ),
           IconButton(
             onPressed: () {
-              _filterProducts(); // Call _filterProducts when the button is pressed
+               // Call _filterProducts when the button is pressed
             },
             icon: Icon(
               Icons.tune,

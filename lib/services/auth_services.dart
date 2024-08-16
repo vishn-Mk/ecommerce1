@@ -11,16 +11,16 @@ class AuthServices {
   String? userId;
 
   AuthServices() {
-    _loadUserId();
+    loadUserId();
   }
 
-  Future<void> _loadUserId() async {
+  Future<void> loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userId');
     print('Loaded user ID: $userId');
   }
 
-  Future<void> _saveUserId(String id) async {
+  Future<void> saveUserId(String id) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userId', id);
     userId = id;
@@ -71,7 +71,7 @@ class AuthServices {
 
         userId = responseData['loginId'];
         if (userId != null) {
-          await _saveUserId(userId!);
+          await saveUserId(userId!);
           print('Login successful');
           print('User ID: $userId');
         } else {

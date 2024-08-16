@@ -43,11 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 10),
+
               const CustomAppBar(),
-              const SizedBox(height: 10),
+
               const MySearchBar(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: ImageSliderBar(
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Categories(
                 onCategorySelected: (index) async {
                   setState(() {
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       .fetchProductsByCategory(categoriesList[index].title);
                 },
               ),
-              const SizedBox(height: 20),
+
               if (value.loading)
                 const Center(child: CircularProgressIndicator())
               else if (displayedProducts.isNotEmpty)
@@ -94,8 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 0.75,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 10,
                 ),
                 itemCount: displayedProducts.length,
                 itemBuilder: (context, index) {

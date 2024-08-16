@@ -58,7 +58,7 @@ class _SuccessState extends State<Success> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: kprimaryColor,
+                backgroundColor: Colors.blue,
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 83),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),

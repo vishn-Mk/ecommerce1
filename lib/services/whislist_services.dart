@@ -11,17 +11,17 @@ class WishService {
 
     try {
       final response = await http.get(url);
+      print('Response body: ${response.body}');
+      print('Status code: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
         print('Response data: $data');
 
         if (data['data'] is List) {
-          var wishList = (data['data'] as List)
+          return (data['data'] as List)
               .map((item) => WishModel.fromJson(item as Map<String, dynamic>))
               .toList();
-          print('Wish list: $wishList');
-          return wishList;
         } else {
           throw Exception('The key "data" is missing or the list is null');
         }
@@ -29,6 +29,7 @@ class WishService {
         throw Exception('Failed to load wishlist contents');
       }
     } catch (e) {
+      print('Error fetching wishlist: $e');
       throw Exception('An error occurred: $e');
     }
   }
@@ -71,4 +72,23 @@ class WishService {
       throw Exception('An error occurred: $e');
     }
   }
+
+  // Fetch product details by productId
+  // Update this method in WishService
+  Future<ProductModel> getProductDetails(String productId) async {
+    final Uri url = Uri.parse('$baseurl/api/products/$productId');
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        return ProductModel.fromJson(data);
+      } else {
+        throw Exception('Failed to load product details');
+      }
+    } catch (e) {
+      throw Exception('An error occurred: $e');
+    }
+  }
+
 }

@@ -48,7 +48,7 @@ class _PaymentState extends State<Payment> {
             ),
           ),
           actions: [
-            ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Colors.orange[900]),
+            ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
               onPressed: () {
                 if (_upiController.text.isNotEmpty) {
                   Navigator.of(context).pop();
@@ -115,7 +115,7 @@ class _PaymentState extends State<Payment> {
             child: ElevatedButton(
               onPressed: _showUPIDialog,
               style: ElevatedButton.styleFrom(
-                backgroundColor: kprimaryColor,
+                backgroundColor: Colors.blue,
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 83),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),

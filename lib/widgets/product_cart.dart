@@ -56,7 +56,7 @@ class ProductCard extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
-                      product.title,
+                      product.title!,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
@@ -74,8 +74,38 @@ class ProductCard extends StatelessWidget {
                           fontSize: 16,
                         ),
                       ),
+                      // Rating Container
+                      Container(
+                        width: 55,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.blue,
+                        ),
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              size: 15,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 3),
+                            Text(
+                              product.rate.toString(),
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
+                  SizedBox(height: 7),
                 ],
               ),
             ),
@@ -99,7 +129,7 @@ class ProductCard extends StatelessWidget {
                           return;
                         }
 
-                        ProductModel newproduct = ProductModel(
+                        ProductModel newProduct = ProductModel(
                           title: product.title,
                           image: product.image,
                           price: product.price,
@@ -109,7 +139,7 @@ class ProductCard extends StatelessWidget {
 
                         await wishProvider.addProductToWish(
                           userId: userId,
-                          product: newproduct,
+                          product: newProduct,
                           context: context,
                         );
 
@@ -129,8 +159,7 @@ class ProductCard extends StatelessWidget {
                       color: Colors.blue[500],
                       size: 22,
                     ),
-                  )
-
+                  ),
                 ),
               ),
             ),

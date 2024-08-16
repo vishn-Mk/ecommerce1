@@ -30,44 +30,44 @@ class CheckOutBox extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          bottomLeft: Radius.circular(30),
+          topRight: Radius.circular(20),
+          bottomLeft: Radius.circular(20),
         ),
       ),
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          // TextField(
-          //   decoration: InputDecoration(
-          //     border: OutlineInputBorder(
-          //       borderRadius: BorderRadius.circular(30),
-          //       borderSide: BorderSide.none,
-          //     ),
-          //     contentPadding: const EdgeInsets.symmetric(
-          //       vertical: 5,
-          //       horizontal: 15,
-          //     ),
-          //     filled: true,
-          //     fillColor: kcontentColor,
-          //     hintText: "Enter Discount Code",
-          //     hintStyle: const TextStyle(
-          //       color: Colors.grey,
-          //       fontWeight: FontWeight.w600,
-          //       fontSize: 14,
-          //     ),
-          //     suffixIcon: TextButton(
-          //       onPressed: () {},
-          //       child: const Text(
-          //         "Apply",
-          //         style: TextStyle(
-          //           fontWeight: FontWeight.bold,
-          //           fontSize: 20,
-          //           color: Colors.white,
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 5,
+                horizontal: 15,
+              ),
+              filled: true,
+              fillColor: kcontentColor,
+              hintText: "Enter Discount Code",
+              hintStyle: const TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
+              suffixIcon: TextButton(
+                onPressed: () {},
+                child: const Text(
+                  "Apply",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ),
+          ),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

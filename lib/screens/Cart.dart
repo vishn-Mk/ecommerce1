@@ -84,33 +84,37 @@ class _CartScreenState extends State<CartScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Stack(
                   children: [
-                    IconButton(
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding: const EdgeInsets.all(15),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BottomNavBar(),
-                            ));
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back_ios,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          padding: const EdgeInsets.all(15),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BottomNavBar(),
+                              ));
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back_ios,
+                        ),
                       ),
                     ),
-                    const Text(
-                      "My Cart",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          color: Colors.black),
+                    Align(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        "My Cart",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            color: Colors.black),
+                      ),
                     ),
-                    const SizedBox()
                   ],
                 ),
               ),

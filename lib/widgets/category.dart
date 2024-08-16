@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Categories extends StatefulWidget {
   final Function(int) onCategorySelected;
@@ -28,7 +29,7 @@ class _CategoriesState extends State<Categories> {
               widget.onCategorySelected(index);
             },
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 8),
+              margin: EdgeInsets.symmetric(horizontal: 3),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -49,7 +50,7 @@ class _CategoriesState extends State<Categories> {
                   SizedBox(height: 5),
                   Text(
                     categoriesList[index].title,
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
                       color: selectedIndex == index ? Colors.blue : Colors.black,
@@ -86,7 +87,7 @@ final List<Category> categoriesList = [
   ),
   Category(
     title: "Beauty",
-    image: "asset/images/face care.png",
+    image: "asset/images/ac.jpg",
   ),
   Category(
     title: "Women",
@@ -94,10 +95,10 @@ final List<Category> categoriesList = [
   ),
   Category(
     title: "Jewelry",
-    image: "asset/images/jewelry-box.png",
+    image: "asset/images/aj.jpg",
   ),
   Category(
     title: "Men",
-    image: "asset/images/man jacket.png",
+    image: "asset/images/ab.jpg",
   ),
 ];

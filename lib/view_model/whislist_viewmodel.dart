@@ -8,20 +8,26 @@ class WishViewModel extends ChangeNotifier {
   List<WishModel> wishItems = [];
   List<ProductModel> wishData = [];
 
+
   final _wishService = WishService();
 
   Future<void> fetchWishContents(String userId, BuildContext context) async {
     loading = true;
     notifyListeners();
-
+print("  =========================${wishData}");
     try {
       wishItems = await _wishService.getWishContents(userId);
+      print('Fetched wishItems: $wishItems');
 
       wishData.clear();
-
       for (var wishItem in wishItems) {
-        wishData.add(wishItem.productId!);
+        if (wishItem.productId != null && wishItem.productId!.sId != null) {
+          var product = await _wishService.getProductDetails(wishItem.productId!.sId!);
+          print('Fetched product: $product');
+          wishData.add(product);
+        }
       }
+      print('Populated wishData: $wishData');
 
       notifyListeners();
     } catch (e) {
@@ -34,8 +40,9 @@ class WishViewModel extends ChangeNotifier {
     }
   }
 
+
   Future<void> deleteWishItem(String itemId, BuildContext context) async {
-    if (itemId != null && itemId.isNotEmpty) {
+    if (itemId.isNotEmpty) {
       try {
         loading = true;
         notifyListeners();
@@ -44,6 +51,7 @@ class WishViewModel extends ChangeNotifier {
 
         if (isSuccess) {
           wishItems.removeWhere((item) => item.sId == itemId);
+          wishData.removeWhere((product) => product.sId == itemId); // Remove from wishData if needed
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Item deleted successfully.')),
           );
@@ -80,7 +88,6 @@ class WishViewModel extends ChangeNotifier {
         ),
       );
 
-      Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Failed to add product to wishlist: $e"),
