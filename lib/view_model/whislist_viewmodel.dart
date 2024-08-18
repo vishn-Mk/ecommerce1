@@ -11,28 +11,55 @@ class WishViewModel extends ChangeNotifier {
 
   final _wishService = WishService();
 
-  Future<void> fetchWishContents(String userId, BuildContext context) async {
+//   Future<void> fetchWishContents(String userId, BuildContext context) async {
+//     loading = true;
+//     notifyListeners();
+// print("  =========================${wishData}");
+//     try {
+//       wishItems = await _wishService.getWishContents(userId);
+//       print('Fetched wishItems: $wishItems');
+//
+//       wishData.clear();
+//       for (var wishItem in wishItems) {
+//         if (wishItem.productId != null && wishItem.productId!.sId != null) {
+//           var product = await _wishService.getProductDetails(wishItem.productId!.sId!);
+//           print('Fetched product: $product');
+//           wishData.add(product);
+//         }
+//       }
+//       print('cccccccccccccccccccccPopulated wishData: $wishData');
+//
+//       notifyListeners();
+//     } catch (e) {
+//       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//         content: Text("Failed to fetch wishlist contents: $e"),
+//       ));
+//     } finally {
+//       loading = false;
+//       notifyListeners();
+//     }
+//   }
+  Future<void> fetchWishContents(String userid, BuildContext context) async {
     loading = true;
     notifyListeners();
-print("  =========================${wishData}");
-    try {
-      wishItems = await _wishService.getWishContents(userId);
-      print('Fetched wishItems: $wishItems');
 
+    try {
+      // Fetch cart contents
+      wishItems = await _wishService.getWishContents(userid);
+
+      // Clear previous cartData
       wishData.clear();
+
+      // Populate cartData with the latest items
       for (var wishItem in wishItems) {
-        if (wishItem.productId != null && wishItem.productId!.sId != null) {
-          var product = await _wishService.getProductDetails(wishItem.productId!.sId!);
-          print('Fetched product: $product');
-          wishData.add(product);
-        }
+        wishData.add(wishItem.productId!);
       }
-      print('Populated wishData: $wishData');
+      print("hiiiiiiiiiiiiiiii${wishData.length}");
 
       notifyListeners();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to fetch wishlist contents: $e"),
+        content: Text("Failed to fetch cart contents: $e"),
       ));
     } finally {
       loading = false;
