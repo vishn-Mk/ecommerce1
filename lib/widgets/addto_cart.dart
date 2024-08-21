@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 import '../../../services/auth_services.dart';
-
 import '../models/product_model.dart';
 import '../view_model/cart_viewmodel.dart';
 
@@ -20,27 +18,35 @@ class _AddToCartState extends State<AddToCart> {
 
   @override
   Widget build(BuildContext context) {
-    final cartprovider = context.watch<CartViewModel>();
-    final authservise = AuthServices();
+    final cartProvider = context.watch<CartViewModel>();
+    final authService = AuthServices();
 
-    // final provider = CartProvider.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Container(
-        height: 85,
+        height: 80,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
           color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         alignment: Alignment.center,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            // Quantity Selector
             Container(
-              height: 40,
+              height: 45,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(25),
                 border: Border.all(color: Colors.black, width: 2),
               ),
               child: Row(
@@ -53,83 +59,113 @@ class _AddToCartState extends State<AddToCart> {
                         });
                       }
                     },
-                    iconSize: 18,
+                    iconSize: 20,
                     icon: const Icon(
                       Icons.remove,
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(width: 5),
                   Text(
                     currentIndex.toString(),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontSize: 18,
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(width: 5),
                   IconButton(
                     onPressed: () {
                       setState(() {
                         currentIndex++;
                       });
                     },
-                    iconSize: 18,
+                    iconSize: 20,
                     icon: const Icon(
                       Icons.add,
                       color: Colors.black,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
+            // Add to Cart Button with Icon and Gradient
             GestureDetector(
-              onTap: () {
-                print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh${widget.product.sId}");
-                ProductModel newproduct = ProductModel(
-                    title: widget.product.title,
-                    image: widget.product.image,
-                    price: widget.product.price,
-                    sId: widget.product.sId,
-                    quantity: widget.product.quantity);
+              onTap: () async {
+                final userId = await authService.userId;
+                if (userId == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('User not logged in')),
+                  );
+                  return;
+                }
 
-                cartprovider.addProductToCart(
-                    userid: authservise.userId!,
-                    product: newproduct,
-                    context: context);
-
-                // provider.toogleFavorite(widget.product);
-                // if items is add then show this snackbar
-                const snackBar = SnackBar(
-                  content: Text(
-                    "Successfully added!",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                      color: Colors.white,
-                    ),
-                  ),
-                  duration: Duration(seconds: 1),
+                ProductModel newProduct = ProductModel(
+                  title: widget.product.title,
+                  image: widget.product.image,
+                  price: widget.product.price,
+                  sId: widget.product.sId,
+                  quantity: widget.product.quantity,
                 );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                cartProvider.addProductToCart(
+                  userid: userId,
+                  product: newProduct,
+                  context: context,
+                );
+
+                //   ScaffoldMessenger.of(context).showSnackBar(
+                //   //   const SnackBar(
+                //   //     content: Text(
+                //   //       "Successfully added!",
+                //   //       style: TextStyle(
+                //   //         fontWeight: FontWeight.bold,
+                //   //         fontSize: 16,
+                //   //         color: Colors.white,
+                //   //       ),
+                //   //     ),
+                //   //   ),
+                //   // );
               },
               child: Container(
-                height: 40,
+                height: 50,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10),
+                  gradient: const LinearGradient(
+                    colors: [Colors.blue, Colors.lightBlueAccent],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.4),
+                      spreadRadius: 2,
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: const Text(
-                  "Add to Cart",
-                  style: TextStyle(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: const [
+                    Icon(
+                      Icons.shopping_cart,
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                      size: 22,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "Add to Cart",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

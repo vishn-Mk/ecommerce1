@@ -48,8 +48,21 @@ class _EditScreenState extends State<EditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Edit', style: TextStyle(fontWeight: FontWeight.bold))),
-      ),
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: const Text(
+            " Edit Profile",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
+          ),
+        ),  flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.purple, Colors.blue],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+      ),    ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

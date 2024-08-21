@@ -1,17 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../models/product_model.dart';
-import '../utils/product_model.dart';
 
 class ItemDetails extends StatelessWidget {
-  final ProductModel  product;
+  final ProductModel product;
   const ItemDetails({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Title
         Text(
           product.title!,
           style: const TextStyle(
@@ -19,14 +17,14 @@ class ItemDetails extends StatelessWidget {
             fontWeight: FontWeight.w800,
           ),
         ),
-        SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 5), // Reduced space between title and price
+        // Price and Rating Row
         Row(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Price
                 Text(
                   "\$${product.price}",
                   style: const TextStyle(
@@ -34,34 +32,45 @@ class ItemDetails extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                //for ratings.
+                const SizedBox(height: 5), // Reduced space between price and rating
+                // Rating and Reviews
                 Row(
                   children: [
+                    // Rating Container with enhanced design
                     Container(
-                      width: 55,
-                      height: 25,
+                      width: 65,
+                      height: 30,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.blue),
+                        gradient: const LinearGradient(
+                          colors: [Colors.blueAccent, Colors.lightBlue],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.blue.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
                       alignment: Alignment.center,
-                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.star,
-                            size: 15,
-                            color: Colors.white,
+                            size: 18,
+                            color: Colors.black,
                           ),
-                          SizedBox(
-                            width: 3,
-                          ),
+                          const SizedBox(width: 5),
                           Text(
                             product.rate.toString(),
                             style: const TextStyle(
-                              fontSize: 13,
+                              fontSize: 15,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
@@ -69,32 +78,38 @@ class ItemDetails extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      width: 5,
-                    ),
+                    const SizedBox(width: 10),
+                    // Reviews Text
                     Text(
-                      product.review!,
-                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                      "${product.review}",
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
+                      ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
             const Spacer(),
+            // Seller Information
             Text.rich(
-
-              TextSpan(children: [TextSpan( text: "",
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+              TextSpan(
+                children: [
+                  const TextSpan(
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  TextSpan(
+                    text: product.seller,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-              TextSpan(children: [TextSpan( text: product.seller,
-                style: TextStyle(
-                  fontSize: 16,fontWeight: FontWeight.bold,
-                ),
-              ),],),
-
-              ],),
             ),
           ],
         ),

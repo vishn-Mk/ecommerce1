@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../screens/Cart.dart';
 import '../screens/ChatBot.dart';
 import '../screens/Favorite.dart';
 import '../screens/Home.dart';
 import '../screens/profiile.dart';
+import '../view_model/cart_viewmodel.dart'; // Import the CartViewModel
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -26,6 +28,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = context.watch<CartViewModel>(); // Access CartViewModel
+    int cartItemCount = cartProvider.cartItems.length; // Get item count
+
     return Scaffold(
       body: AnimatedSwitcher(
         duration: Duration(milliseconds: 300),
@@ -89,10 +94,38 @@ class _BottomNavBarState extends State<BottomNavBar> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.shopping_cart_outlined,
-                size: currentIndex == 3 ? 24 : 18, // Further adjusted size
-                color: currentIndex == 3 ? Colors.white : Colors.white70,
+              icon: Stack(
+                children: [
+                  Icon(
+                    Icons.shopping_cart_outlined,
+                    size: currentIndex == 3 ? 24 : 18, // Further adjusted size
+                    color: currentIndex == 3 ? Colors.white : Colors.white70,
+                  ),
+                  if (cartItemCount > 0)
+                    Positioned(
+                      right: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 12,
+                          minHeight: 12,
+                        ),
+                        child: Text(
+                          '$cartItemCount',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                ],
               ),
               label: 'Cart',
             ),

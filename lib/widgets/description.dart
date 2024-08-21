@@ -1,7 +1,4 @@
-import 'package:ecommerce/utils/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Description extends StatelessWidget {
   final String description;
@@ -13,52 +10,43 @@ class Description extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SingleChildScrollView(scrollDirection: Axis.vertical,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 120,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Description",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
+          // Updated Container with Gradient and Shadow
+          Container(
+            width: 120,
+            height: 40,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Colors.blue, Colors.lightBlueAccent],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.4),
+                  spreadRadius: 2,
+                  blurRadius: 6,
+                  offset: const Offset(0, 3),
                 ),
-                // Text(
-                //   "Specifications",
-                //   style: TextStyle(
-                //     fontWeight: FontWeight.bold,
-                //     color: Colors.black,
-                //     fontSize: 16,
-                //   ),
-                // ),
-                // Text(
-                //   "Reviews",
-                //   style: TextStyle(
-                //     fontWeight: FontWeight.bold,
-                //     color: Colors.black,
-                //     fontSize: 16,
-                //   ),
-                // ),
               ],
             ),
+            alignment: Alignment.center,
+            child: const Text(
+              "Description",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 5), // Reduced space between "Description" and the text
           Text(
             description,
-            style: TextStyle(fontSize: 16, color: Colors.grey,),
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+            ),
           ),
         ],
       ),

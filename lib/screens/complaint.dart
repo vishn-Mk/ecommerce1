@@ -28,12 +28,12 @@ class _ComplaintRegisterScreenState extends State<ComplaintRegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register Complaint', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('Register Complaint', style: TextStyle(color:Colors.white,fontWeight: FontWeight.bold)),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.white, Colors.orangeAccent],
+              colors: [Colors.purple, Colors.blue],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

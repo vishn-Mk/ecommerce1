@@ -28,12 +28,17 @@ class _ReviewAddScreenState extends State<ReviewAddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Review', style: TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: true,
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: const Text(
+            "Add Review",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+          ),
+        ),        centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.white, Colors.lightGreen],
+              colors: [Colors.purple, Colors.blue],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

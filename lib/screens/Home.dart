@@ -5,7 +5,6 @@ import '../view_model/product_viewmodel.dart';
 import '../widgets/category.dart';
 import '../widgets/home_appbar.dart';
 import '../widgets/image.sliderbar.dart';
-
 import '../widgets/product_cart.dart';
 import '../widgets/search_bar.dart';
 
@@ -32,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final value = context.watch<HomeViewModel>();
-
     List<ProductModel> displayedProducts = _getDisplayedProducts(value);
 
     return Scaffold(
@@ -43,16 +41,13 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               const CustomAppBar(),
-
               const MySearchBar(),
               const SizedBox(height: 5),
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: ImageSliderBar(
                   currentSlide: currentSlider,
-
                   onchange: (value) {
                     setState(() {
                       currentSlider = value;
@@ -60,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               Categories(
                 onCategorySelected: (index) async {
                   setState(() {
@@ -71,59 +66,43 @@ class _HomeScreenState extends State<HomeScreen> {
                       .fetchProductsByCategory(categoriesList[index].title);
                 },
               ),
-
               if (selectedIndex == 0)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      // Check if the products list is not empty before accessing
-                      "Explore All Items",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black),
-                    ),
-                  ],
+                Transform.translate(
+                  offset: const Offset(0, -6), // Reduce space here
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Explore All Items",
+                        style: TextStyle(
+                          fontSize: 16, // Adjust font size here
+                          fontWeight: FontWeight.bold, // Adjust font weight here
+                          color: Colors.black,
+                          fontFamily: 'Poppins', // Adjust font family here
+                          letterSpacing: 1.1, // Adjust letter spacing here
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-
-              // if (value.loading)
-              //   const Center(child: CircularProgressIndicator())
-              // else if (displayedProducts.isNotEmpty)
-              //   Padding(
-              //     padding: const EdgeInsets.symmetric(vertical: 10),
-              //     child: Text(
-              //       'Special for You',
-              //       style: const TextStyle(
-              //         fontSize: 22,
-              //         fontWeight: FontWeight.bold,
-              //         color: Colors.black,
-              //       ),
-              //     ),
-              //   )
-              // else
-              //   const Center(child: Text('No products available')),
-              GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.75,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 10,
-                ),
-                itemCount: displayedProducts.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
-                    ),
-                    child: ProductCard(
+              Transform.translate(
+                offset: const Offset(0, -39), // Reduce space here
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // Number of columns
+                    childAspectRatio: 0.75, // Aspect ratio for each item
+                    crossAxisSpacing: 5, // Horizontal spacing between items
+                    mainAxisSpacing: 1, // Vertical spacing between items
+                  ),
+                  itemCount: displayedProducts.length,
+                  itemBuilder: (context, index) {
+                    return ProductCard(
                       product: displayedProducts[index],
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ],
           ),

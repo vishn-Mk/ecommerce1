@@ -23,9 +23,7 @@ class ProductCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DetailsScreen(
-                product: product,
-              ),
+              builder: (context) => DetailsScreen(product: product),
             ),
           );
         },
@@ -34,131 +32,170 @@ class ProductCard extends StatelessWidget {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(15),
                 color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 5),
+                  const SizedBox(height: 16),
                   Center(
                     child: Hero(
                       tag: product.image!,
                       child: Image.network(
                         product.image!,
                         width: 120,
-                        height: 120,
+                        height: 130,
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Padding(
-                    padding: EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 11),
                     child: Text(
                       product.title!,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 16,
                       ),
                     ),
                   ),
-                  SizedBox(height: 7),
+                  const SizedBox(height: 7),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "\$${product.price}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 11),
+                        child: Text(
+                          "\$${product.price}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
-                      // Rating Container
-                      Container(
-                        width: 55,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.blue,
-                        ),
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              size: 15,
-                              color: Colors.white,
+                      // Enhanced Rating Container moved to the right
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                          width: 60,
+                          height: 30,
+                          margin: const EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Colors.blueAccent, Colors.lightBlue],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
-                            SizedBox(width: 3),
-                            Text(
-                              product.rate.toString(),
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blue.withOpacity(0.3),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.star,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                product.rate.toString(),
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 7),
+                  const SizedBox(height: 7),
                 ],
               ),
             ),
-            // For favorite icon
+            // Enhanced Favorite Icon
             Positioned(
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  height: 35,
-                  width: 40,
-                  child: GestureDetector(
-                    onTap: () async {
-                      try {
-                        provider.toggleFavorite(product);
-
-                        final userId = await authService.userId;
-                        if (userId == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('User not logged in')),
-                          );
-                          return;
-                        }
-
-                        ProductModel newProduct = ProductModel(
-                          title: product.title,
-                          image: product.image,
-                          price: product.price,
-                          sId: product.sId,
-                          quantity: product.quantity,
-                        );
-
-                        await wishProvider.addProductToWish(
-                          userId: userId,
-                          product: newProduct,
-                          context: context,
-                        );
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Product added to wishlist')),
-                        );
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Failed to add to wishlist: $e')),
-                        );
-                      }
-                    },
-                    child: Icon(
-                      provider.isExist(product)
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      color: Colors.blue[500],
-                      size: 22,
+              right: 6,
+              top: 4,
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
                     ),
+                  ],
+                ),
+                child: GestureDetector(
+                  onTap: () async {
+                    try {
+                      provider.toggleFavorite(product);
+
+                      final userId = await authService.userId;
+                      if (userId == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('User not logged in')),
+                        );
+                        return;
+                      }
+
+                      ProductModel newProduct = ProductModel(
+                        title: product.title,
+                        image: product.image,
+                        price: product.price,
+                        sId: product.sId,
+                        quantity: product.quantity,
+                      );
+
+                      await wishProvider.addProductToWish(
+                        userId: userId,
+                        product: newProduct,
+                        context: context,
+                      );
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Product added to wishlist')),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to add to wishlist: $e')),
+                      );
+                    }
+                  },
+                  child: Icon(
+                    provider.isExist(product)
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: Colors.blue[500],
+                    size: 22,
                   ),
                 ),
               ),

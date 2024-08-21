@@ -69,33 +69,36 @@ class WishViewModel extends ChangeNotifier {
 
 
   Future<void> deleteWishItem(String itemId, BuildContext context) async {
-    if (itemId.isNotEmpty) {
-      try {
-        loading = true;
-        notifyListeners();
+    try {
+      print("Deleting item with ID: $itemId");
+      print("Before deletion: ${wishItems.length}");
 
-        bool isSuccess = await _wishService.deleteItem(itemId);
+      loading = true;
+      notifyListeners();
 
-        if (isSuccess) {
-          wishItems.removeWhere((item) => item.sId == itemId);
-          wishData.removeWhere((product) => product.sId == itemId); // Remove from wishData if needed
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Item deleted successfully.')),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to delete item.')),
-          );
-        }
-      } catch (e) {
-        print('Delete error: $e');
+      bool isSuccess = await _wishService.deleteItem(itemId);
+
+      if (isSuccess) {
+        // Remove the item from the local list
+        wishItems.removeWhere((item) => item.sId == itemId);
+        print("After deletion: ${wishItems.length}");
+
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString()}')),
+          SnackBar(content: Text('Item deleted successfully.')),
         );
-      } finally {
-        loading = false;
-        notifyListeners();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to delete item.')),
+        );
       }
+    } catch (e) {
+      print('Delete error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    } finally {
+      loading = false;
+      notifyListeners();
     }
   }
 

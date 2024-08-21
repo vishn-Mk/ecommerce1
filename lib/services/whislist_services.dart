@@ -36,12 +36,25 @@ class WishService {
 
   // Delete product from wishlist
   Future<bool> deleteItem(String itemId) async {
-    final response = await http.delete(
-      Uri.parse('$baseurl/api/products/wishlist/removeItem/$itemId'),
-    );
+    try {
+      final response = await http.delete(
+        Uri.parse('$baseurl/api/products/wishlist/removeItem/$itemId'),
+      );
 
-    return response.statusCode == 200;
+      print("Status code: ${response.statusCode}, Body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Failed to delete item with status code: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('Exception occurred: $e');
+      return false;
+    }
   }
+
 
   // Add item to wishlist
   Future<void> addProductToWish({
