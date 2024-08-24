@@ -67,12 +67,9 @@ class WishViewModel extends ChangeNotifier {
     }
   }
 
-
   Future<void> deleteWishItem(String itemId, BuildContext context) async {
     try {
-      print("Deleting item with ID: $itemId");
-      print("Before deletion: ${wishItems.length}");
-
+      print("gggggggggggggggggggggggggggggggggg${itemId}");
       loading = true;
       notifyListeners();
 
@@ -81,8 +78,6 @@ class WishViewModel extends ChangeNotifier {
       if (isSuccess) {
         // Remove the item from the local list
         wishItems.removeWhere((item) => item.sId == itemId);
-        print("After deletion: ${wishItems.length}");
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Item deleted successfully.')),
         );
@@ -101,6 +96,7 @@ class WishViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
 
   Future<void> addProductToWish({
     required String userId,

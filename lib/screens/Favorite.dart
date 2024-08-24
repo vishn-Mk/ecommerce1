@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../services/auth_services.dart';
 import '../utils/constants.dart';
 import '../view_model/whislist_viewmodel.dart';
+import '../widgets/bottom_nav.dart'; // If needed for navigation
+import '../widgets/check_out.dart'; // If needed for checkout box
 
-class Favorite extends StatefulWidget {
-  const Favorite({super.key});
+class FavoriteScreen extends StatefulWidget {
+  const FavoriteScreen({super.key});
 
   @override
-  State<Favorite> createState() => _FavoriteState();
+  State<FavoriteScreen> createState() => _FavoriteScreenState();
 }
 
-class _FavoriteState extends State<Favorite> {
+class _FavoriteScreenState extends State<FavoriteScreen> {
   Future<void>? _loadDataFuture;
 
   @override
   void initState() {
     super.initState();
-    _loadDataFuture = loadData();
+    _loadDataFuture = _loadData();
   }
 
-  Future<void> loadData() async {
+  Future<void> _loadData() async {
     final authService = AuthServices();
     await authService.loadUserId();
     final wishProvider = Provider.of<WishViewModel>(context, listen: false);
@@ -51,8 +54,8 @@ class _FavoriteState extends State<Favorite> {
         title: Align(
           alignment: Alignment.centerLeft,
           child: const Text(
-            "Favorites",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28, color: Colors.white),
+            "My Favorites",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
           ),
         ),
         flexibleSpace: Container(
@@ -65,113 +68,120 @@ class _FavoriteState extends State<Favorite> {
           ),
         ),
       ),
-      body: FutureBuilder<void>(
-        future: _loadDataFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (wishProvider.wishData.isEmpty) {
-            return const Center(child: Text('No favorite items found.'));
-          }
 
-          return ListView.builder(
-            itemCount: wishProvider.wishItems.length,
-            itemBuilder: (context, index) {
-              var item = wishProvider.wishData[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                child: Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade300,
-                            offset: Offset(0, 5),
-                            blurRadius: 10,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: wishProvider.wishItems.length,
+                itemBuilder: (context, index) {
+                  var item = wishProvider.wishItems[index];
+                  return Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade300,
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                            border: Border.all(
+                              color: Colors.grey.shade300,
+                              width: 1.5,
+                            ),
                           ),
-                        ],
-                        gradient: LinearGradient(
-                          colors: [Colors.white, Colors.grey.shade200],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 95,
-                              height: 95,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.grey.shade100,
-                                image: DecorationImage(
-                                  image: NetworkImage(item.image ?? ""),
-                                  fit: BoxFit.cover,
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 90,
+                                width: 90,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: kcontentColor,
+                                  border: Border.all(
+                                    color: Colors.grey.shade300,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.network(
+                                    item.productId?.image ?? "",
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 20),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item.title ?? "Unknown Title",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.productId?.title ?? "",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      item.productId?.category ?? "",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Colors.grey.shade500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "\$${item.productId?.price ?? ""}",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  item.category ?? "Unknown Category",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey.shade500,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "\$${item.price ?? '0.00'}",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      top: 40,
-                      right: 15,
-                      child: IconButton(
-                        onPressed: () {
-                          String itemId = item.sId ?? '';
-                          deleteItem(itemId);
-                        },
-                        icon: const Icon(
-                          Icons.delete_forever,
-                          color: Colors.redAccent,
-                          size: 30,
+                      Positioned(
+                        top: 20,
+                        right: 20,
+                        child: IconButton(
+                          onPressed: () {
+                            if (item.sId != null) {
+                              deleteItem(item.sId!);
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.delete_forever,
+                            color: Colors.red,
+                            size: 24,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        },
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

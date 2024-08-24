@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../services/auth_services.dart';
 import '../utils/constants.dart';
 import '../view_model/cart_viewmodel.dart';
@@ -34,11 +33,11 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final cartprovider = context.watch<CartViewModel>();
+    final cartProvider = context.watch<CartViewModel>();
 
     double getTotalPrice() {
       double total = 0.0;
-      for (var item in cartprovider.cartItems) {
+      for (var item in cartProvider.cartItems) {
         double price = item.productId?.price?.toDouble() ?? 0.0;
         int qty = item.quantity ?? 0;
         total += price * qty;
@@ -48,32 +47,30 @@ class _CartScreenState extends State<CartScreen> {
 
     int getTotalItem() {
       int totalItems = 0;
-      for (var item in cartprovider.cartItems) {
+      for (var item in cartProvider.cartItems) {
         totalItems += (item.quantity ?? 0);
       }
       return totalItems;
     }
 
     void increment(int index) async {
-      final item = cartprovider.cartItems[index];
+      final item = cartProvider.cartItems[index];
       if (item.quantity != null) {
         int newQuantity = item.quantity! + 1;
-        await cartprovider.updateCartItemQuantity(
-            item.sId!, newQuantity, context);
+        await cartProvider.updateCartItemQuantity(item.sId!, newQuantity, context);
       }
     }
 
     void decrement(int index) async {
-      final item = cartprovider.cartItems[index];
+      final item = cartProvider.cartItems[index];
       if (item.quantity != null && item.quantity! > 1) {
         int newQuantity = item.quantity! - 1;
-        await cartprovider.updateCartItemQuantity(
-            item.sId!, newQuantity, context);
+        await cartProvider.updateCartItemQuantity(item.sId!, newQuantity, context);
       }
     }
 
     void deleteItem(String itemId) async {
-      await cartprovider.deleteCartItem(itemId, context);
+      await cartProvider.deleteCartItem(itemId, context);
     }
 
     return Scaffold(
@@ -110,23 +107,35 @@ class _CartScreenState extends State<CartScreen> {
           children: [
             Expanded(
               child: Consumer<CartViewModel>(
-                builder: (context, cartprovider, child) {
+                builder: (context, cartProvider, child) {
                   return ListView.builder(
                     shrinkWrap: true,
-                    itemCount: cartprovider.cartItems.length,
+                    itemCount: cartProvider.cartItems.length,
                     itemBuilder: (context, index) {
-                      var item = cartprovider.cartItems[index];
+                      var item = cartProvider.cartItems[index];
                       return Stack(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(5),
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade300,
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                                border: Border.all(
+                                  color: Colors.grey.shade300,
+                                  width: 1.5,
+                                ),
                               ),
-                              padding: const EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(15),
                               child: Row(
                                 children: [
                                   Container(
@@ -135,38 +144,52 @@ class _CartScreenState extends State<CartScreen> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       color: kcontentColor,
+                                      border: Border.all(
+                                        color: Colors.grey.shade300,
+                                        width: 1.5,
+                                      ),
                                     ),
-                                    child: Image.network(item.productId?.image ?? ""),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.network(
+                                        item.productId?.image ?? "",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                   const SizedBox(width: 10),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        item.productId?.title ?? "",
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          item.productId?.title ?? "",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        item.productId?.category ?? "",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.grey.shade400,
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          item.productId?.category ?? "",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                            color: Colors.grey.shade500,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Text(
-                                        "\$${item.productId?.price ?? ""}",
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          "\$${item.productId?.price ?? ""}",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                            color: Colors.green,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -183,10 +206,10 @@ class _CartScreenState extends State<CartScreen> {
                                       deleteItem(item.sId!);
                                     }
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.delete_forever,
                                     color: Colors.red,
-                                    size: 20,
+                                    size: 24,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
@@ -196,36 +219,33 @@ class _CartScreenState extends State<CartScreen> {
                                     borderRadius: BorderRadius.circular(20),
                                     color: kcontentColor,
                                     border: Border.all(
-                                      color: Colors.grey.shade400,
-                                      width: 2,
+                                      color: Colors.black,
+                                      width: 1,
                                     ),
                                   ),
                                   child: Row(
                                     children: [
                                       IconButton(
                                         onPressed: () {
-                                          increment(index);
+                                          decrement(index);
                                         },
-                                        icon: Icon(Icons.add),
+                                        icon: const Icon(Icons.remove),
                                         color: Colors.blue,
                                       ),
-
                                       Text(
-                                        item.quantity?.toString() ?? "",
+                                        item.quantity?.toString() ?? "1",  // Ensure correct quantity is displayed
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                         ),
                                       ),
-                                      const SizedBox(width: 10),
                                       IconButton(
                                         onPressed: () {
-                                          decrement(index);
+                                          increment(index);
                                         },
-                                        icon: Icon(Icons.remove),
+                                        icon: const Icon(Icons.add),
                                         color: Colors.blue,
                                       ),
-
                                     ],
                                   ),
                                 ),

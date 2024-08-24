@@ -27,32 +27,9 @@ class DetailAppBar extends StatelessWidget {
             iconSize: 25,
             icon: const Icon(Icons.arrow_back_ios),
           ),
-          const Spacer(),
-          IconButton(
-            style: IconButton.styleFrom(
-              backgroundColor: Colors.white,
-              padding: const EdgeInsets.all(15),
-            ),
-            onPressed: () {},
-            iconSize: 25,
-            icon: const Icon(Icons.share_outlined),
-          ),
+
           const SizedBox(width: 10),
-          IconButton(
-            style: IconButton.styleFrom(
-              backgroundColor: Colors.white,
-              padding: const EdgeInsets.all(15),
-            ),
-            onPressed: () {
-              provider.toggleFavorite(product);
-            },
-            iconSize: 25,
-            icon: Icon(
-              provider.isExist(product) ? Icons.favorite : Icons.favorite_border,
-              color: Colors.black,
-              size: 25,
-            ),
-          ),
+
         ],
       ),
     );

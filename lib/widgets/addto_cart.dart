@@ -99,12 +99,13 @@ class _AddToCartState extends State<AddToCart> {
                   return;
                 }
 
+                // Update the quantity in the product model
                 ProductModel newProduct = ProductModel(
                   title: widget.product.title,
                   image: widget.product.image,
                   price: widget.product.price,
                   sId: widget.product.sId,
-                  quantity: widget.product.quantity,
+                  quantity: currentIndex, // Set quantity to the current index
                 );
 
                 cartProvider.addProductToCart(
@@ -113,18 +114,9 @@ class _AddToCartState extends State<AddToCart> {
                   context: context,
                 );
 
-                //   ScaffoldMessenger.of(context).showSnackBar(
-                //   //   const SnackBar(
-                //   //     content: Text(
-                //   //       "Successfully added!",
-                //   //       style: TextStyle(
-                //   //         fontWeight: FontWeight.bold,
-                //   //         fontSize: 16,
-                //   //         color: Colors.white,
-                //   //       ),
-                //   //     ),
-                //   //   ),
-                //   // );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Product added to cart successfully')),
+                );
               },
               child: Container(
                 height: 50,

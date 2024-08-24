@@ -29,7 +29,7 @@ class ItemDetails extends StatelessWidget {
                   "\$${product.price}",
                   style: const TextStyle(
                     fontSize: 25,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w800,color: Colors.green
                   ),
                 ),
                 const SizedBox(height: 5), // Reduced space between price and rating
@@ -64,7 +64,7 @@ class ItemDetails extends StatelessWidget {
                           const Icon(
                             Icons.star,
                             size: 18,
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                           const SizedBox(width: 5),
                           Text(

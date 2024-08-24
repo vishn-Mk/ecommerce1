@@ -1,3 +1,4 @@
+import 'package:ecommerce/provider/favorite_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../screens/Cart.dart';
@@ -5,7 +6,8 @@ import '../screens/ChatBot.dart';
 import '../screens/Favorite.dart';
 import '../screens/Home.dart';
 import '../screens/profiile.dart';
-import '../view_model/cart_viewmodel.dart'; // Import the CartViewModel
+import '../view_model/cart_viewmodel.dart';
+import '../view_model/whislist_viewmodel.dart'; // Import the CartViewModel
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -20,7 +22,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   // Updated list of screens
   final List<Widget> screens = [
     ChatScreen(),
-    Favorite(),
+    FavoriteScreen(),
     HomeScreen(),
     CartScreen(),
     ProfileScreen(),
@@ -29,7 +31,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = context.watch<CartViewModel>(); // Access CartViewModel
-    int cartItemCount = cartProvider.cartItems.length; // Get item count
+    int cartItemCount = cartProvider.cartItems.length; // Get cart item count
+
+    // For demonstration, let's assume you have a favorite item count as well
+   final wishProvider =context.watch<WishViewModel>();
+    int favoriteItemCount = wishProvider.wishItems.length; // Replace with your actual favorite item count
 
     return Scaffold(
       body: AnimatedSwitcher(
@@ -43,13 +49,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
         child: screens[currentIndex],
       ),
       bottomNavigationBar: Container(
-        height: 50, // Further decreased container height
+        height: 54, // Container height for better clickability
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue, Colors.blue],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          color: Colors.white, // Changed to solid white for better visibility
           borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
           boxShadow: [
             BoxShadow(
@@ -72,24 +74,54 @@ class _BottomNavBarState extends State<BottomNavBar> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.chat_outlined,
-                size: currentIndex == 0 ? 24 : 18, // Further adjusted size
-                color: currentIndex == 0 ? Colors.white : Colors.white70,
+                size: currentIndex == 0 ? 24 : 20, // Adjusted icon size
+                color: currentIndex == 0 ? Colors.blue : Colors.grey[600], // Changed color
               ),
               label: 'ChatBot',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.favorite_border,
-                size: currentIndex == 1 ? 24 : 18, // Further adjusted size
-                color: currentIndex == 1 ? Colors.white : Colors.white70,
+              icon: Stack(
+                children: [
+                  Icon(
+                    Icons.favorite_border,
+                    size: currentIndex == 1 ? 24 : 20, // Adjusted icon size
+                    color: currentIndex == 1 ? Colors.blue : Colors.grey[600], // Changed color
+                  ),
+                  if (favoriteItemCount > 0)
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(1), // Padding for the badge
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(15), // Badge shape
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 14, // Badge width
+                          minHeight: 14, // Badge height
+                        ),
+                        child: Center(
+                          child: Text(
+                            '$favoriteItemCount',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 7, // Font size for badge
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home_outlined,
-                size: currentIndex == 2 ? 24 : 18, // Further adjusted size
-                color: currentIndex == 2 ? Colors.white : Colors.white70,
+                size: currentIndex == 2 ? 24 : 20, // Adjusted icon size
+                color: currentIndex == 2 ? Colors.blue : Colors.grey[600], // Changed color
               ),
               label: 'Home',
             ),
@@ -98,30 +130,33 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 children: [
                   Icon(
                     Icons.shopping_cart_outlined,
-                    size: currentIndex == 3 ? 24 : 18, // Further adjusted size
-                    color: currentIndex == 3 ? Colors.white : Colors.white70,
+                    size: currentIndex == 3 ? 24 : 20, // Adjusted icon size
+                    color: currentIndex == 3 ? Colors.blue : Colors.grey[600], // Changed color
                   ),
                   if (cartItemCount > 0)
                     Positioned(
                       right: 0,
+                      top: 0,
+                     // Adjusted top position
                       child: Container(
-                        padding: EdgeInsets.all(1),
+                        padding: EdgeInsets.all(1), // Reduced padding for a smaller container
                         decoration: BoxDecoration(
                           color: Colors.red,
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(15), // Reduced border radius
                         ),
                         constraints: BoxConstraints(
-                          minWidth: 12,
-                          minHeight: 12,
+                          minWidth: 14, // Reduced minimum width
+                          minHeight: 14, // Reduced minimum height
                         ),
-                        child: Text(
-                          '$cartItemCount',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 8,
-                            fontWeight: FontWeight.bold,
+                        child: Center(
+                          child: Text(
+                            '$cartItemCount',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 7, // Font size for cart item count
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
@@ -132,21 +167,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.person,
-                size: currentIndex == 4 ? 24 : 18, // Further adjusted size
-                color: currentIndex == 4 ? Colors.white : Colors.white70,
+                size: currentIndex == 4 ? 24 : 20, // Adjusted icon size
+                color: currentIndex == 4 ? Colors.blue : Colors.grey[600], // Changed color
               ),
               label: 'Profile',
             ),
           ],
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white70,
+          selectedItemColor: Colors.blue, // Color for selected item
+          unselectedItemColor: Colors.grey[600], // Color for unselected items
           showUnselectedLabels: true,
           elevation: 0,
           backgroundColor: Colors.transparent,
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-          iconSize: 20, // Further adjusted default icon size
-          selectedFontSize: 10,
-          unselectedFontSize: 8,
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+          unselectedLabelStyle: TextStyle(fontSize: 10),
+          iconSize: 24, // Default icon size adjusted
+          selectedFontSize: 12,
+          unselectedFontSize: 10,
         ),
       ),
     );

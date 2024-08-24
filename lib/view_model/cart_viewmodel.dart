@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-
 import '../models/cart_model.dart';
 import '../models/product_model.dart';
 import '../services/cart_services.dart';
@@ -13,7 +11,6 @@ class CartViewModel extends ChangeNotifier {
   final _cartService = CartService();
 
   // Add product to cart
-  // Add product to cart
   Future<void> addProductToCart({
     required String userid,
     required ProductModel product,
@@ -23,9 +20,10 @@ class CartViewModel extends ChangeNotifier {
       loading = true;
       notifyListeners();
 
+      // Ensure the quantity is passed to the service
       await _cartService.addProductToCart(userid: userid, product: product);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Product added to cart successfully"),
         ),
       );
@@ -40,19 +38,16 @@ class CartViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
   // Fetch cart contents for a user
   Future<void> fetchCartContents(String userid, BuildContext context) async {
     loading = true;
     notifyListeners();
 
     try {
-      // Fetch cart contents
       cartItems = await _cartService.getCartContents(userid);
-
-      // Clear previous cartData
       cartData.clear();
 
-      // Populate cartData with the latest items
       for (var cartItem in cartItems) {
         cartData.add(cartItem.productId! as ProductModel);
       }
@@ -77,9 +72,9 @@ class CartViewModel extends ChangeNotifier {
     try {
       loading = true;
       notifyListeners();
-      await _cartService.removeProductFromCart(
-          userid: userid, productId: productId);
-      // Update the local cartItems list after successful removal
+
+      await _cartService.removeProductFromCart(userid: userid, productId: productId);
+
       cartItems.removeWhere((item) => item.productId?.sId == productId);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Product removed from cart successfully"),
@@ -94,9 +89,8 @@ class CartViewModel extends ChangeNotifier {
     }
   }
 
-  // Increase product quantity
-  Future<void> updateCartItemQuantity(
-      String itemId, int newQuantity, BuildContext context) async {
+  // Update cart item quantity
+  Future<void> updateCartItemQuantity(String itemId, int newQuantity, BuildContext context) async {
     loading = true;
     notifyListeners();
     try {
@@ -116,6 +110,7 @@ class CartViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
   Future<void> deleteCartItem(String itemId, BuildContext context) async {
     try {
       loading = true;
@@ -124,7 +119,6 @@ class CartViewModel extends ChangeNotifier {
       bool isSuccess = await _cartService.deleteItem(itemId);
 
       if (isSuccess) {
-        // Remove the item from the local list
         cartItems.removeWhere((item) => item.sId == itemId);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Item deleted successfully.')),
@@ -145,4 +139,3 @@ class CartViewModel extends ChangeNotifier {
     }
   }
 }
-
