@@ -5,7 +5,8 @@ import '../../services/auth_services.dart';
 import '../utils/constants.dart';
 import '../view_model/whislist_viewmodel.dart';
 import '../widgets/bottom_nav.dart'; // If needed for navigation
-import '../widgets/check_out.dart'; // If needed for checkout box
+import '../widgets/check_out.dart';
+import 'Home.dart'; // If needed for checkout box
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -43,25 +44,26 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     return Scaffold(
       backgroundColor: kcontentColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.grey,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavBar(),));
+
           },
         ),
         title: Align(
           alignment: Alignment.centerLeft,
           child: const Text(
             "My Favorites",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
           ),
         ),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.purple, Colors.blue],
+              colors: [Colors.white, Colors.white],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -136,12 +138,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
-                                      item.productId?.category ?? "",
+                                      item.productId?.description ?? "",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14,
                                         color: Colors.grey.shade500,
                                       ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(height: 10),
                                     Text(

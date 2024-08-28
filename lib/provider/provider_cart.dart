@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import '../models/product_model.dart';
-import '../utils/product_model.dart';
+
 
 class CartProvider extends ChangeNotifier {
   final List<ProductModel> _cart = [];

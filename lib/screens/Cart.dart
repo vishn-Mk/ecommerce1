@@ -1,3 +1,4 @@
+import 'package:ecommerce/screens/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../services/auth_services.dart';
@@ -76,25 +77,25 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: kcontentColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavBar(),));
           },
         ),
         title: Align(
           alignment: Alignment.centerLeft,
           child: const Text(
             "My Cart",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
           ),
         ),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.purple, Colors.blue],
+              colors: [Colors.white, Colors.white],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -172,12 +173,13 @@ class _CartScreenState extends State<CartScreen> {
                                         ),
                                         const SizedBox(height: 5),
                                         Text(
-                                          item.productId?.category ?? "",
+                                          item.productId?.description ?? "",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 14,
                                             color: Colors.grey.shade500,
                                           ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                         const SizedBox(height: 10),
                                         Text(

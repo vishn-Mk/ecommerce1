@@ -1,4 +1,4 @@
-import 'package:ecommerce/utils/product_model.dart';
+
 import 'package:ecommerce/widgets/addto_cart.dart';
 import 'package:ecommerce/widgets/description.dart';
 import 'package:ecommerce/widgets/image_slider2.dart';

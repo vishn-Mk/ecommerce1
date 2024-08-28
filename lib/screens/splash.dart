@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ecommerce/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
 // Make sure to import your login page
@@ -14,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => Login()),
+        MaterialPageRoute(builder: (_) => WelcomeScreen()),
       );
     });
   }

@@ -3,6 +3,7 @@ import 'package:ecommerce/screens/login.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/Cart.dart';
+import '../screens/ChatBot.dart';
 import '../screens/appname_widget.dart';
 import '../screens/profiile.dart';
 
@@ -18,6 +19,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _CustomAppBarState extends State<CustomAppBar> {
   late ConfettiController _confettiController;
+  int notificationCount = 5; // Example notification count
 
   @override
   void initState() {
@@ -77,6 +79,16 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     ),
                   ),
                 ),
+                PopupMenuItem(
+                  value: "ChatBot",
+                  child: Text(
+                    "ChatBot",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ];
             },
             onSelected: (value) {
@@ -91,13 +103,18 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   MaterialPageRoute(builder: (context) => CartScreen()),
                 );
                 _showFireworks(); // Trigger fireworks when Cart is selected
-              }
-              else if (value == "Logout") {
+              } else if (value == "ChatBot") { // Corrected condition for ChatBot
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatScreen()), // Ensure the screen name is correct
+                );
+                _showFireworks(); // Trigger fireworks when ChatBot is selected
+              } else if (value == "Logout") {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Login()),
                 );
-                _showFireworks(); // Trigger fireworks when Cart is selected
+                _showFireworks(); // Trigger fireworks when Logout is selected
               }
               print(value);
             },
@@ -110,15 +127,45 @@ class _CustomAppBarState extends State<CustomAppBar> {
           ),
           centerTitle: true,
           actions: [
-            IconButton(
-              onPressed: () {
-                _showFireworks(); // Trigger fireworks when notification icon is pressed
-              },
-              icon: const Icon(
-                Icons.notifications_outlined,
-                color: Colors.black,
-              ), // Icon color
-              iconSize: 25,
+            Stack(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    _showFireworks(); // Trigger fireworks when notification icon is pressed
+                  },
+                  icon: const Icon(
+                    Icons.notifications_outlined,
+                    color: Colors.black,
+                  ), // Icon color
+                  iconSize: 25,
+                ),
+                if (notificationCount > 0)
+                  Positioned(
+                    right: 11,
+                    top: 11,
+                    child: Container(
+                      padding: EdgeInsets.all(1), // Adjust padding for badge
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10), // Badge shape
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 16, // Badge size
+                        minHeight: 16, // Badge size
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$notificationCount',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10, // Font size for badge
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ],
         ),

@@ -1,11 +1,13 @@
-import 'package:ecommerce/screens/review.dart';
+import 'package:ecommerce/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
 import 'complaint.dart';
 import 'edit profile.dart';
-
 import 'login.dart';
 import 'orderhistory.dart';
+import 'review.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -16,6 +18,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String name = 'Vishnu';
   String email = 'vishnu@gmail.com';
   String phoneNumber = '7356735648';
+  File? _profileImage;
+  final ImagePicker _picker = ImagePicker();
 
   void _editProfile() async {
     final result = await Navigator.push(
@@ -34,6 +38,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         name = result['name'];
         email = result['email'];
         phoneNumber = result['phoneNumber'];
+      });
+    }
+  }
+
+  Future<void> _pickProfileImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _profileImage = File(pickedFile.path);
       });
     }
   }
@@ -64,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange[900],
+                backgroundColor: Colors.blue,
               ),
             ),
           ],
@@ -75,25 +89,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         title: Align(
           alignment: Alignment.centerLeft,
           child: const Text(
             "Profile",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 23,
+              color: Colors.black,
+              fontFamily: 'Poppins',
+            ),
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavBar(),));
+
           },
         ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.purple, Colors.blue],
+              colors: [Colors.white, Colors.white],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -105,14 +125,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header Section
             Center(
-              child: Column(
+              child: Stack(
+                clipBehavior: Clip.none,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      // Handle profile picture tap, e.g., show a larger view
-                    },
+                    onTap: _pickProfileImage,
                     child: AnimatedContainer(
                       duration: Duration(seconds: 1),
                       curve: Curves.easeInOut,
@@ -127,28 +145,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                       child: CircleAvatar(
-                        radius: 45, // Slightly smaller radius for the profile picture
-                        backgroundImage:
-                        AssetImage('asset/images/profile1.jpg'),
+                        radius: 45,
+                        backgroundImage: _profileImage != null
+                            ? FileImage(_profileImage!)
+                            : AssetImage('asset/images/profile1.jpg') as ImageProvider,
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    name,
-                    style: TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 5),
-                  Text(
-                    email,
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: _pickProfileImage,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 2,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
+            SizedBox(height: 10),
+            Center(
+              child: Text(
+                name,
+                style: TextStyle(
+                    fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 5),
+            Center(
+              child: Text(
+                email,
+                style: TextStyle(fontSize: 16, color: Colors.grey[500]),
+              ),
+            ),
             SizedBox(height: 20),
-            // Personal Information Section
             Card(
               elevation: 5,
               shape: RoundedRectangleBorder(
@@ -176,7 +221,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(height: 20),
-            // Order History Section
             Card(
               elevation: 5,
               shape: RoundedRectangleBorder(
@@ -211,7 +255,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(height: 20),
-            // Complaints Section
             Card(
               elevation: 5,
               shape: RoundedRectangleBorder(
@@ -240,7 +283,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(height: 20),
-            // Reviews Section
             Card(
               elevation: 5,
               shape: RoundedRectangleBorder(
@@ -270,13 +312,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(height: 30),
-            // Logout Button
             Center(
               child: ElevatedButton(
                 onPressed: _confirmLogout,
                 style: ElevatedButton.styleFrom(
-                  padding:
-                  EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 32),
                   backgroundColor: Colors.blueAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

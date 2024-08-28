@@ -5,6 +5,7 @@ import '../screens/Cart.dart';
 import '../screens/ChatBot.dart';
 import '../screens/Favorite.dart';
 import '../screens/Home.dart';
+
 import '../screens/profiile.dart';
 import '../view_model/cart_viewmodel.dart';
 import '../view_model/whislist_viewmodel.dart'; // Import the CartViewModel
@@ -105,7 +106,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           child: Text(
                             '$favoriteItemCount',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontSize: 7, // Font size for badge
                               fontWeight: FontWeight.bold,
                             ),
@@ -152,7 +153,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           child: Text(
                             '$cartItemCount',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontSize: 7, // Font size for cart item count
                               fontWeight: FontWeight.bold,
                             ),

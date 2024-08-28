@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 
 import '../screens/payment.dart';
 import '../screens/success.dart';
@@ -14,6 +12,7 @@ class CheckOutBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartprovider = context.watch<CartViewModel>();
+
     double getTotalPrice() {
       double total = 0.0;
       for (var item in cartprovider.cartItems) {
@@ -25,50 +24,75 @@ class CheckOutBox extends StatelessWidget {
     }
 
     return Container(
-      height: 300,
-      width: 300,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(20),
-          bottomLeft: Radius.circular(20),
+      height: 250, // Reduced height
+      width: 280,  // Reduced width
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.blue.shade300, Colors.blue.shade700],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 2,  // Reduced spread radius
+            blurRadius: 5,    // Reduced blur radius
+            offset: const Offset(0, 2), // Adjusted offset
+          ),
+        ],
       ),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(15), // Reduced padding
       child: Column(
+        mainAxisSize: MainAxisSize.min, // Adjusted to fit content
         children: [
           TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(20), // Reduced radius
                 borderSide: BorderSide.none,
               ),
               contentPadding: const EdgeInsets.symmetric(
-                vertical: 5,
-                horizontal: 15,
+                vertical: 8,    // Reduced vertical padding
+                horizontal: 15, // Reduced horizontal padding
               ),
               filled: true,
-              fillColor: kcontentColor,
+              fillColor: Colors.white.withOpacity(0.9),
               hintText: "Enter Discount Code",
               hintStyle: const TextStyle(
                 color: Colors.grey,
                 fontWeight: FontWeight.w600,
-                fontSize: 14,
+                fontSize: 12, // Reduced font size
               ),
-              suffixIcon: TextButton(
+              suffixIcon: ElevatedButton(
                 onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red.shade400,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(15),   // Reduced radius
+                      bottomRight: Radius.circular(15),
+                    ),
+                  ),
+                  padding: EdgeInsets.zero, // Removed extra padding
+                ),
                 child: const Text(
                   "Apply",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: Colors.red,
+                    fontSize: 12, // Reduced font size
+                    color: Colors.white,
                   ),
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15), // Reduced spacing
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -76,61 +100,71 @@ class CheckOutBox extends StatelessWidget {
                 "SubTotal",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.grey,
-                  fontSize: 16,
+                  color: Colors.white70,
+                  fontSize: 14, // Reduced font size
                 ),
               ),
               Text(
                 "\$${getTotalPrice().toStringAsFixed(2)}",
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  color: Colors.white,
+                  fontSize: 14, // Reduced font size
                 ),
-              )
+              ),
             ],
           ),
-          const SizedBox(height: 10),
-          const Divider(),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8), // Reduced spacing
+          Divider(color: Colors.white.withOpacity(0.5), thickness: 1), // Adjusted thickness
+          const SizedBox(height: 8), // Reduced spacing
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                "total",
+                "Total",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 16, // Slightly increased for emphasis
+                  color: Colors.white,
                 ),
               ),
               Text(
                 "\$${getTotalPrice().toStringAsFixed(2)}",
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              )
-            ],
-          ),
-          const SizedBox(height: 50),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                minimumSize: const Size(double.infinity, 55),
-              ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Payment()));
-              },
-              child: const Text(
-                "Check Out",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 16, // Slightly increased for emphasis
                   color: Colors.white,
                 ),
-              ))
+              ),
+            ],
+          ),
+          const SizedBox(height: 20), // Reduced spacing
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange.shade600,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20), // Reduced radius
+              ),
+              elevation: 2, // Reduced elevation
+              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10), // Adjusted padding
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Payment()),
+              );
+            },
+            child: const Text(
+              "Check Out",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16, // Adjusted font size
+                color: Colors.white,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
-// now we add the provider and display the total price
